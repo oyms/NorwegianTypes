@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skaar.Organisasjonsnummer", "src\Skaar.Organisasjonsnummer\Skaar.Organisasjonsnummer.csproj", "{36504064-035F-4146-9D39-80216540329E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skaar.TypeSupport", "src\Skaar.TypeSupport\Skaar.TypeSupport.csproj", "{D6D45CC1-301D-4938-A3F6-221541CD57AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skaar.Organisasjonsnummer.Tests", "tests\Skaar.Organisasjonsnummer.Tests\Skaar.Organisasjonsnummer.Tests.csproj", "{D6C28672-339B-4B0C-BAC6-2C1389A0C54C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OrgNr", "OrgNr", "{10EBC65C-0088-4007-86BD-05199B4F2F11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{15C937E6-81E8-4792-9195-C79ADA2E357B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36504064-035F-4146-9D39-80216540329E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36504064-035F-4146-9D39-80216540329E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36504064-035F-4146-9D39-80216540329E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36504064-035F-4146-9D39-80216540329E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6D45CC1-301D-4938-A3F6-221541CD57AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6D45CC1-301D-4938-A3F6-221541CD57AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6D45CC1-301D-4938-A3F6-221541CD57AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6D45CC1-301D-4938-A3F6-221541CD57AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6C28672-339B-4B0C-BAC6-2C1389A0C54C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6C28672-339B-4B0C-BAC6-2C1389A0C54C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6C28672-339B-4B0C-BAC6-2C1389A0C54C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6C28672-339B-4B0C-BAC6-2C1389A0C54C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{36504064-035F-4146-9D39-80216540329E} = {10EBC65C-0088-4007-86BD-05199B4F2F11}
+		{D6C28672-339B-4B0C-BAC6-2C1389A0C54C} = {10EBC65C-0088-4007-86BD-05199B4F2F11}
+		{D6D45CC1-301D-4938-A3F6-221541CD57AD} = {15C937E6-81E8-4792-9195-C79ADA2E357B}
+	EndGlobalSection
+EndGlobal
