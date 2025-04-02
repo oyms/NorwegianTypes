@@ -6,3 +6,5 @@ This package is an implementation of the
 
 The type `Skaar.Organisasjonsnummer` has validation logic to parse
 a string containing an org number.
+
+![Icon](https://raw.githubusercontent.com/oyms/NorwegianTypes/refs/heads/main/.idea/.idea.Skaar.NorwegianTypes/.idea/icon.svg)

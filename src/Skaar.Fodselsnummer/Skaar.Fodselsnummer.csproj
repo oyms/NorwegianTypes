@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\CommonProps.targets" />
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Skaar</RootNamespace>
+        <PackageId>Skaar.Fodselsnummer</PackageId>
+        <PackageTags>norway fødselsnummer domain validation</PackageTags>
+        <Description>A library implementing a type for Norwegian identification numbers.</Description>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Skaar.TypeSupport\Skaar.TypeSupport.csproj" />
+    </ItemGroup>
+
+</Project>
