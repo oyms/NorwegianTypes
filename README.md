@@ -1,5 +1,7 @@
-Norwegian types
+Norwegian types 🇳🇴
 ===
+
+![Logo](./resources/logo.png)
 
 This repository contain code for
 implementing common norwegian domain types.

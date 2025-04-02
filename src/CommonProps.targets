@@ -8,7 +8,7 @@
         <Authors>Skaar</Authors>
         <IncludeSymbols>true</IncludeSymbols>
         <IncludeSource>false</IncludeSource>
-        <RepositoryUrl>https://github.com/oyms</RepositoryUrl>
+        <RepositoryUrl>https://github.com/oyms/NorwegianTypes</RepositoryUrl>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageIcon>logo.png</PackageIcon>

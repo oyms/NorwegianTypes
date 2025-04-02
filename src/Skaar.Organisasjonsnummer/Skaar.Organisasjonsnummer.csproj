@@ -5,6 +5,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Skaar</RootNamespace>
+        <PackageId>Organisasjonsnummer</PackageId>
+        <PackageTags>norway organisasjonsnummer domain mod11 validation</PackageTags>
+        <Description>A library implementing a type for Norwegian organization numbers.</Description>
     </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\Skaar.TypeSupport\Skaar.TypeSupport.csproj" />
