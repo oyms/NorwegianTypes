@@ -17,10 +17,30 @@ public class ParsingTests
     [InlineData("14106138320")]
     [InlineData("13101879636")]
     [InlineData("30076814992")]
-    public void TryParse_WithValidFodselsnummer_IsValidIsTrue(string number)
+    public void TryParse_WithValidFodselsnummer_IsValidOfTypeFodselsnummer(string number)
     {
         Fodselsnummer.TryParse(number, CultureInfo.CurrentCulture, out var result).ShouldBeTrue();
         result.IsValid.ShouldBe(true);
         result.Type.ShouldBe(NummerType.Fodselsnummer);
+    }
+    
+    [Theory]
+    [InlineData("41041714032")]
+    [InlineData("41093341501")]
+    [InlineData("42041010376")]
+    [InlineData("42043417112")]
+    [InlineData("42079638336")]
+    [InlineData("420999980 02")]
+    [InlineData("42116298443")]
+    [InlineData("42124536957")]
+    [InlineData("42128 99 8688")]
+    [InlineData("43026142033")]
+    [InlineData("43043543149")]
+    [InlineData("43100833132")]
+    public void TryParse_WithValidDNummer_IsValidOfTypeDNummer(string number)
+    {
+        Fodselsnummer.TryParse(number, CultureInfo.CurrentCulture, out var result).ShouldBeTrue();
+        result.IsValid.ShouldBe(true);
+        result.Type.ShouldBe(NummerType.DNummer);
     }
 }
