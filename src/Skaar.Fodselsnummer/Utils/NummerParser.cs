@@ -44,9 +44,8 @@ internal static class NummerParser
             default: throw new NotSupportedException();
         }
     }
-    
 
-    private static bool IsFodselsnummer(string fnr) => ValidateControlNumber(fnr) && ValidateBirthDate(fnr, out _);
+    public static bool IsFodselsnummer(string? number) => number is not null && ValidateControlNumber(number) && ValidateBirthDate(number, out _);
 
     private static bool IsDNummer(string value)
     {

@@ -1,3 +1,4 @@
+using Skaar.Contracts;
 using Skaar.TypeSupport.Contracts;
 using Skaar.TypeSupport.Serialization;
 using Skaar.TypeSupport.Utils;
@@ -5,7 +6,6 @@ using Skaar.Utils;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Numerics;
 using System.Text.Json.Serialization;
 
@@ -21,12 +21,12 @@ namespace Skaar;
 [JsonConverter(typeof(ParsableJsonConverter<IdNumber>))]
 [TypeConverter(typeof(ParsableTypeConverter<IdNumber>))]
 public readonly struct IdNumber :
+    IIdNumber,
     IParsable<IdNumber>,
     ISafeParsable<IdNumber>,
     IEquatable<IdNumber>,
     IComparable<IdNumber>,
     IComparisonOperators<IdNumber, IdNumber, bool>,
-    ICanBeValid,
     IRandomValueFactory<IdNumber>
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -94,4 +94,6 @@ public readonly struct IdNumber :
     public static bool operator <(IdNumber left, IdNumber right) => left.CompareTo(right) < 0;
 
     public static bool operator <=(IdNumber left, IdNumber right) => left.CompareTo(right) <= 0;
+
+    public static explicit operator IdNumber(Fodselsnummer fodselsnummer) => CreateNew(fodselsnummer.ToString());
 }

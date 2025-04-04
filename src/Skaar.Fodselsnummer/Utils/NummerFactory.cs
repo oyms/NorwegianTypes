@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices.JavaScript;
+
 namespace Skaar.Utils;
 
 internal static class NummerFactory
@@ -6,6 +8,7 @@ internal static class NummerFactory
         type switch
         {
             NummerType.Fodselsnummer => CreateFodselsnummer(date, date.ToString("ddMMyy"), gender),
+            NummerType.DNummer => CreateDNummer(date, gender),
             _ => throw new NotSupportedException("Type not supported")
         };
 
@@ -19,6 +22,12 @@ internal static class NummerFactory
             return $"{number}{checksum:00}";
         }
 
+        return CreateFodselsnummer(date, encodedDate, gender);
+    }
+
+    private static string CreateDNummer(DateOnly date, Gender gender)
+    {
+        var encodedDate = $"{date.Day + 40:00}{date:MMyy}";
         return CreateFodselsnummer(date, encodedDate, gender);
     }
 
