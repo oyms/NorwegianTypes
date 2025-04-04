@@ -1,4 +1,5 @@
 using Shouldly;
+using Skaar.Contracts;
 using System.Globalization;
 using Xunit;
 

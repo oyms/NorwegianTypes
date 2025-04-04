@@ -97,4 +97,5 @@ public readonly struct IdNumber :
 
     public static explicit operator IdNumber(Fodselsnummer fodselsnummer) => CreateNew(fodselsnummer.ToString());
     public static explicit operator IdNumber(DNummer dNummer) => CreateNew(dNummer.ToString());
+    public static explicit operator IdNumber(DufNummer dufNummer) => CreateNew(dufNummer.ToString());
 }

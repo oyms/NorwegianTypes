@@ -1,3 +1,4 @@
+using Skaar.Contracts;
 using System.Runtime.InteropServices.JavaScript;
 
 namespace Skaar.Utils;
@@ -9,6 +10,7 @@ internal static class NummerFactory
         {
             NummerType.Fodselsnummer => CreateFodselsnummer(date, date.ToString("ddMMyy"), gender),
             NummerType.DNummer => CreateDNummer(date, gender),
+            NummerType.DufNummer => CreateDufNummer(date),
             _ => throw new NotSupportedException("Type not supported")
         };
 
@@ -29,6 +31,12 @@ internal static class NummerFactory
     {
         var encodedDate = $"{date.Day + 40:00}{date:MMyy}";
         return CreateFodselsnummer(date, encodedDate, gender);
+    }
+
+    private static string CreateDufNummer(DateOnly date)
+    {
+        var firstPart = $"{date:yyyy}{Random.Shared.Next(1, 999999):000000}";
+        return $"{firstPart}{NummerParser.GetDufNummerControlDigits(firstPart):00}";
     }
 
     private static int GetIndiviualNumber(int year, Gender gender)

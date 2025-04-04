@@ -1,5 +1,5 @@
 using Shouldly;
-using System.Diagnostics;
+using Skaar.Contracts;
 using System.Globalization;
 using Xunit;
 
@@ -35,7 +35,6 @@ public class DNummerTests(ITestContextAccessor testContext)
         {
             var result = DNummer.CreateNew();
             @out.WriteLine(result.ToString());
-            if(!result.IsValid) Debugger.Break();
             result.IsValid.ShouldBeTrue();
         }
     }

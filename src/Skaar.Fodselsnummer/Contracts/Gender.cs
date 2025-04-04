@@ -1,4 +1,4 @@
-namespace Skaar;
+namespace Skaar.Contracts;
 
 public enum Gender
 {
