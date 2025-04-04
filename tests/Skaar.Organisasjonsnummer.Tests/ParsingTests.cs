@@ -14,7 +14,7 @@ public class ParsingTests
     [InlineData("NO-BRC-968253980")]
     public void TryParse_WithValidNumbers_IsValidIsFalse(string orgnr)
     {
-        Organisasjonsnummer.TryParse(orgnr, CultureInfo.CurrentCulture, out var result).ShouldBeTrue();
+        Organisasjonsnummer.TryParse(orgnr, CultureInfo.InvariantCulture, out var result).ShouldBeTrue();
         result.IsValid.ShouldBeTrue();
     }    
     
@@ -26,7 +26,7 @@ public class ParsingTests
     [InlineData("934xx3x28x2x80")]
     public void TryParse_WithInvalidNumbers_IsValidIsFalse(string orgnr)
     {
-        Organisasjonsnummer.TryParse(orgnr, CultureInfo.CurrentCulture, out var result).ShouldBeFalse();
+        Organisasjonsnummer.TryParse(orgnr, CultureInfo.InvariantCulture, out var result).ShouldBeFalse();
         result.IsValid.ShouldBeFalse();
     }
 }

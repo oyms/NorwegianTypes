@@ -20,7 +20,7 @@ public class FodselsnummerTests(ITestContextAccessor testContext)
     [InlineData("30076814992")]
     public void TryParse_WithValidNumber_IsValid(string number)
     {
-        Fodselsnummer.TryParse(number, CultureInfo.CurrentCulture, out var result).ShouldBeTrue();
+        Fodselsnummer.TryParse(number, CultureInfo.InvariantCulture, out var result).ShouldBeTrue();
         result.IsValid.ShouldBeTrue();
     }
     
@@ -28,7 +28,7 @@ public class FodselsnummerTests(ITestContextAccessor testContext)
     [InlineData("30076814392")]
     public void TryParse_WithInvalidNumber_IsNotValid(string number)
     {
-        Fodselsnummer.TryParse(number, CultureInfo.CurrentCulture, out var result).ShouldBeFalse();
+        Fodselsnummer.TryParse(number, CultureInfo.InvariantCulture, out var result).ShouldBeFalse();
         result.IsValid.ShouldBeFalse();
     }
     

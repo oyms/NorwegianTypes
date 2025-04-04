@@ -20,7 +20,7 @@ public class ParsingTests
     [InlineData("30076814992")]
     public void TryParse_WithValidFodselsnummer_IsValidOfTypeFodselsnummer(string number)
     {
-        IdNumber.TryParse(number, CultureInfo.CurrentCulture, out var result).ShouldBeTrue();
+        IdNumber.TryParse(number, CultureInfo.InvariantCulture, out var result).ShouldBeTrue();
         result.IsValid.ShouldBe(true);
         result.Type.ShouldBe(NummerType.Fodselsnummer);
     }
@@ -40,7 +40,7 @@ public class ParsingTests
     [InlineData("43100833132")]
     public void TryParse_WithValidDNummer_IsValidOfTypeDNummer(string number)
     {
-        IdNumber.TryParse(number, CultureInfo.CurrentCulture, out var result).ShouldBeTrue();
+        IdNumber.TryParse(number, CultureInfo.InvariantCulture, out var result).ShouldBeTrue();
         result.IsValid.ShouldBe(true);
         result.Type.ShouldBe(NummerType.DNummer);
     }
@@ -50,7 +50,7 @@ public class ParsingTests
     [Theory]
     public void TryParse_WithValidDufNummer_IsValidOfTypeDufNummer(string number)
     {
-        var result = IdNumber.CreateNew(number, CultureInfo.CurrentCulture);
+        var result = IdNumber.CreateNew(number, CultureInfo.InvariantCulture);
         result.IsValid.ShouldBe(true);
         result.Type.ShouldBe(NummerType.DufNummer);
     }

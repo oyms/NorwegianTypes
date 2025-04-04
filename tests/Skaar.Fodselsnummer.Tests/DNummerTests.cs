@@ -13,7 +13,7 @@ public class DNummerTests(ITestContextAccessor testContext)
     [InlineData("50089890141")]
     public void TryParse_WithValidNumber_IsValid(string number)
     {
-        DNummer.TryParse(number, CultureInfo.CurrentCulture, out var result).ShouldBeTrue();
+        DNummer.TryParse(number, CultureInfo.InvariantCulture, out var result).ShouldBeTrue();
         result.IsValid.ShouldBeTrue();
     }
     
@@ -22,7 +22,7 @@ public class DNummerTests(ITestContextAccessor testContext)
     [Theory]
     public void TryParse_WithInvalidNumber_IsNotValid(string number)
     {
-        DNummer.TryParse(number, CultureInfo.CurrentCulture, out var result).ShouldBeFalse();
+        DNummer.TryParse(number, CultureInfo.InvariantCulture, out var result).ShouldBeFalse();
         result.IsValid.ShouldBeFalse();
     }
     
