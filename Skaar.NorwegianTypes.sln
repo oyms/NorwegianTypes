@@ -9,6 +9,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OrgNr", "OrgNr", "{10EBC65C-0088-4007-86BD-05199B4F2F11}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{15C937E6-81E8-4792-9195-C79ADA2E357B}"
+	ProjectSection(SolutionItems) = preProject
+		src\CommonProps.targets = src\CommonProps.targets
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skaar.Fodselsnummer", "src\Skaar.Fodselsnummer\Skaar.Fodselsnummer.csproj", "{E11B914A-DE9D-4409-86BE-6F56A0040582}"
 EndProject

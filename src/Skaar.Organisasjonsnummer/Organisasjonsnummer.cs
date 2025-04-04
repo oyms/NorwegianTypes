@@ -41,6 +41,11 @@ public readonly struct Organisasjonsnummer :
     /// </summary>
     public static Organisasjonsnummer CreateNew() => Utils.GenerateRandom();
 
+    /// <summary>
+    /// Parses the string (as with <see cref="Parse"/>
+    /// but will not throw expcetion when invalid.
+    /// <seealso cref="IsValid"/>
+    /// </summary>
     public static Organisasjonsnummer CreateNew(string? value, IFormatProvider? provider = null) 
         => Parser.SafeParse<Organisasjonsnummer>(value, provider);
 
