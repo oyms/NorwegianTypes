@@ -15,5 +15,10 @@ public enum NummerType
     /// D-nummer
     /// <seealso href="https://www.skatteetaten.no/en/person/national-registry/identitetsnummer/d-nummer/"/>
     /// </summary>
-    DNummer = 2
+    DNummer = 2,
+    /// <summary>
+    /// DUF-nummer
+    /// <seealso href="https://www.udi.no/en/word-definitions/duf-number/"/>
+    /// </summary>
+    DufNummer = 3
 }
