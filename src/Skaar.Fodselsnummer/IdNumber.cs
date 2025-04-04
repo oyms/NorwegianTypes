@@ -96,4 +96,5 @@ public readonly struct IdNumber :
     public static bool operator <=(IdNumber left, IdNumber right) => left.CompareTo(right) <= 0;
 
     public static explicit operator IdNumber(Fodselsnummer fodselsnummer) => CreateNew(fodselsnummer.ToString());
+    public static explicit operator IdNumber(DNummer dNummer) => CreateNew(dNummer.ToString());
 }

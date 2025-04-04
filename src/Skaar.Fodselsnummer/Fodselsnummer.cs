@@ -17,6 +17,7 @@ namespace Skaar;
 /// </summary>
 /// <remarks>
 /// <seealso href="https://en.wikipedia.org/wiki/National_identity_number_(Norway)"/>
+/// <seealso href="https://www.skatteetaten.no/en/person/national-registry/identitetsnummer/fodselsnummer/"/>
 /// </remarks>
 [JsonConverter(typeof(ParsableJsonConverter<Fodselsnummer>))]
 [TypeConverter(typeof(ParsableTypeConverter<Fodselsnummer>))]

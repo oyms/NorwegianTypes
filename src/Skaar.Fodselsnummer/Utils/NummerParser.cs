@@ -47,12 +47,13 @@ internal static class NummerParser
 
     public static bool IsFodselsnummer(string? number) => number is not null && ValidateControlNumber(number) && ValidateBirthDate(number, out _);
 
-    private static bool IsDNummer(string value)
+    public static bool IsDNummer(string? value)
     {
+        if (value is null) return false;
         if (value.Length != 11 || !value.All(char.IsDigit))
             return false;
         var firstDigit = (value[0] - '0');
-        if (firstDigit > 2 && firstDigit <= 6)
+        if (firstDigit > 3 && firstDigit <= 7)
         {
             return ValidateControlNumber(value) && ValidateBirthDate(firstDigit - 4 + value[1..], out _);
         }
