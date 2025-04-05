@@ -11,5 +11,7 @@ a string containing an account number.
 - Parsing includes validation logic
 - Equality and comparison
 - IBAN number
+- IBAN bank lookup
+- Account type
 
 ![Icon](https://raw.githubusercontent.com/oyms/NorwegianTypes/refs/heads/main/.idea/.idea.Skaar.NorwegianTypes/.idea/icon.svg)

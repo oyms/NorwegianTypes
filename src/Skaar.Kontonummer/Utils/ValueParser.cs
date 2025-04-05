@@ -25,5 +25,13 @@ internal static class ValueParser
         var numeric = System.Numerics.BigInteger.Parse(rearranged); 
         var checksum = (int)(98 - (numeric % 97));
         return $"NO{checksum:00}{accountNumber}";
-    } 
+    }
+
+    public static AccountType GetAccountType(string accountNumber)
+    {
+        var accountSeries = int.Parse(accountNumber[4..6]);
+        if(accountSeries == 0) return AccountType.Settlement;
+        if (accountSeries >= 90) return AccountType.Internal;
+        return AccountType.CustomerAccount;
+    }
 }

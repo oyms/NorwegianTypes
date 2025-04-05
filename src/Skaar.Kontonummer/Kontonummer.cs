@@ -90,12 +90,22 @@ public readonly struct Kontonummer :
             return ValueParser.GetIbanNumber(_value);
         }
     }
+
+    /// <summary>
+    /// The type, based on the account series
+    /// </summary>
+    public AccountType AccountType => IsValid ? ValueParser.GetAccountType(_value) : AccountType.Undefined;
+    
+    /// <summary>
+    /// The bank holding the account (based on a lookup in the bic registry)
+    /// </summary>
+    public Bank Bank => IsValid ? BicRepository.Lookup(_value[..4]) : Bank.Undefined;
     
     public bool Equals(Kontonummer other) => _value == other._value;
 
     public override bool Equals(object? obj) => obj is Kontonummer other && Equals(other);
 
-    public override int GetHashCode() => (_value != null ? _value.GetHashCode() : 0);
+    public override int GetHashCode() => _value != null ? _value.GetHashCode() : 0;
 
     public static bool operator ==(Kontonummer left, Kontonummer right) => left.Equals(right);
 
