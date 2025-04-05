@@ -149,6 +149,6 @@ internal static class NummerParser
         }
 
         string fullDate = $"{datePart.Substring(0, 2)}.{datePart.Substring(2, 2)}.{fullYear}";
-        return DateOnly.TryParse(fullDate, out date);
+        return DateOnly.TryParseExact(fullDate, "dd.MM.yyyy", out date);
     }
 }
