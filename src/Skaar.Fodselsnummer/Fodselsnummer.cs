@@ -39,6 +39,12 @@ public readonly struct Fodselsnummer :
         IsValid = NummerParser.IsFodselsnummer(_value);
     }
     
+    /// <remarks>
+    /// This is the birthdate based on the first six digits of the number.
+    /// When the value is Invalid, <c>default</c> date is returned.
+    /// The centennial is interpolated from parsing rules of the individual number.
+    /// <seealso href="https://lovdata.no/forskrift/2007-11-09-1268/§2-2"/>
+    /// </remarks>
     public DateOnly BirthDate 
     {
         get
@@ -48,6 +54,11 @@ public readonly struct Fodselsnummer :
         }
     }
 
+    /// <remarks>
+    /// This is the gender based on the last individual digit.
+    /// When the value is Invalid, an undefined gender is returned.
+    /// <seealso href="https://lovdata.no/forskrift/2007-11-09-1268/§2-2"/>
+    /// </remarks>
     public Gender Gender
     {
         get
