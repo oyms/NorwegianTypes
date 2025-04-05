@@ -87,7 +87,7 @@ public readonly struct Fodselsnummer :
         return result.IsValid;
     }
 
-    public static Fodselsnummer CreateNew(string? value, IFormatProvider? provider = null) => TypeSupport.Serialization.Parser.SafeParse<Fodselsnummer>(value, provider);
+    public static Fodselsnummer CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<Fodselsnummer>(value, provider);
     public static Fodselsnummer CreateNew()
     {
         var date = DateOnly.FromDateTime(new DateTime(1940, 1, 1) + TimeSpan.FromDays(Random.Shared.Next(365 * 100)));

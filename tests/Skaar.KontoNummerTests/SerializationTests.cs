@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Skaar.KontonummerTests;
 
-public class SerializationTests(ITestContextAccessor testContextAccessor)
+public class SerializationTests
 {
     [Theory]
     [InlineData(KontonummerFormatting.None, "38361226620")]

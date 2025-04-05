@@ -56,7 +56,7 @@ public readonly struct DufNummer :
         return result.IsValid;
     }
 
-    public static DufNummer CreateNew(string? value, IFormatProvider? provider = null) => TypeSupport.Serialization.Parser.SafeParse<DufNummer>(value, provider);
+    public static DufNummer CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<DufNummer>(value, provider);
     public static DufNummer CreateNew()
     {
         var date = DateOnly.FromDateTime(new DateTime(1940, 1, 1) + TimeSpan.FromDays(Random.Shared.Next(365 * 100)));

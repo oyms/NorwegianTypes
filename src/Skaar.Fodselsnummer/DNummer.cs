@@ -81,7 +81,7 @@ public readonly struct DNummer :
         return result.IsValid;
     }
 
-    public static DNummer CreateNew(string? value, IFormatProvider? provider = null) => TypeSupport.Serialization.Parser.SafeParse<DNummer>(value, provider);
+    public static DNummer CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<DNummer>(value, provider);
     public static DNummer CreateNew()
     {
         var date = DateOnly.FromDateTime(new DateTime(1940, 1, 1) + TimeSpan.FromDays(Random.Shared.Next(365 * 100)));

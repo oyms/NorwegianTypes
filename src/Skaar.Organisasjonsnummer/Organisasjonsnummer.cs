@@ -35,13 +35,13 @@ public readonly struct Organisasjonsnummer :
     private Organisasjonsnummer(string? value)
     {
         _value = StringUtils.RemoveNonDigits(value);
-        IsValid = Factory.ValidateNumber(_value);
+        IsValid = ValidationRules.ValidateNumber(_value);
     }
 
     /// <summary>
     /// Creates a new random valid value.
     /// </summary>
-    public static Organisasjonsnummer CreateNew() => Factory.GenerateRandom();
+    public static Organisasjonsnummer CreateNew() => ValidationRules.GenerateRandom();
 
     /// <summary>
     /// Parses the string (as with <see cref="Parse"/>
@@ -97,7 +97,7 @@ public readonly struct Organisasjonsnummer :
         if (!IsValid) return ToString();
         return formatting switch
         {
-            OrganisasjonsnummerFormatting.WithSpaces => Factory.FormatNumberWithSpacing(this),
+            OrganisasjonsnummerFormatting.WithSpaces => ValidationRules.FormatNumberWithSpacing(this),
             OrganisasjonsnummerFormatting.OrgIdFormat => $"NO-BRC-{_value}",
             _ => ToString()
         };

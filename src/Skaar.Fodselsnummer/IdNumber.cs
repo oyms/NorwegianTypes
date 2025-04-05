@@ -56,7 +56,7 @@ public readonly struct IdNumber :
         return result.IsValid;
     }
 
-    public static IdNumber CreateNew(string? value, IFormatProvider? provider = null) => TypeSupport.Serialization.Parser.SafeParse<IdNumber>(value, provider);
+    public static IdNumber CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<IdNumber>(value, provider);
     
     [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid => Type != NummerType.Invalid;

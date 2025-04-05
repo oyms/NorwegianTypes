@@ -18,11 +18,11 @@ internal static class ValueFactory
         var individualPart = GetIndiviualNumber(date.Year, gender);
 
         var number = $"{encodedDate}{individualPart:000}";
-        if (ValueParser.TryGetChecksum(NummerType.Fodselsnummer, number.Select(c => c - '0').ToArray(), out int checksum))
-        {
-            return $"{number}{checksum:00}";
-        }
 
+        if (ValueParser.TryGetChecksumForFodselsnummer(number, out var checksum))
+        {
+            return $"{number}{checksum}";
+        }
         return CreateFodselsnummer(date, encodedDate, gender);
     }
 

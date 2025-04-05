@@ -15,7 +15,7 @@ public class ParsingTests(ITestContextAccessor testContextAccessor)
     public void TryParse_WithValidValue_IsValidIsTrue(string value)
     {
         Kontonummer.TryParse(value, CultureInfo.InvariantCulture, out var result).ShouldBeTrue();
-        testContextAccessor.Current.TestOutputHelper!.WriteLine(result.ToString()!);
+        testContextAccessor.Current.TestOutputHelper!.WriteLine(result.ToString());
         result.IsValid.ShouldBeTrue();
     }
 

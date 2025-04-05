@@ -1,4 +1,6 @@
 using Skaar.Contracts;
+using Skaar.TypeSupport.Utils;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Skaar.Utils;
 
@@ -16,35 +18,16 @@ internal static class ValueParser
         return NummerType.Invalid;
     }
 
-    public static bool TryGetChecksum(NummerType nummerType,int[] digits, out int result)
+    public static bool TryGetChecksumForFodselsnummer(string number, [NotNullWhen(true)] out string? checksum)
     {
-        switch (nummerType)
+        if (Mod11.TryGetChecksumDigit(number, FNrWeights1, out var checksum1) &&
+            Mod11.TryGetChecksumDigit(number + checksum1, FNrWeights2, out var checksum2))
         {
-            case NummerType.Fodselsnummer:
-            case NummerType.DNummer:
-                {
-                    var sum1 = digits.Take(9).Select((d, i) => d * FNrWeights1[i]).Sum();
-                    var k1 = 11 - (sum1 % 11);
-                    if (k1 == 11) k1 = 0;
-                    if (k1 == 10)
-                    {
-                        result = 0;
-                        return false;
-                    }
-                    var sum2 = digits.Append(k1).Select((d, i) => d * FNrWeights2[i]).Sum();
-                    var k2 = 11 - (sum2 % 11);
-                    if (k2 == 11) k2 = 0;
-                    if (k2 == 10)
-                    {
-                        result = 0;
-                        return false;
-                    }
-
-                    result = k1 * 10 + k2;
-                    return true;
-                }
-            default: throw new NotSupportedException();
+            checksum = $"{checksum1}{checksum2}";
+            return true;
         }
+        checksum = null;
+        return false;
     }
 
     public static bool IsFodselsnummer(string? number) => number is not null && ValidateControlNumber(number) && ValidateBirthDate(number, out _);
@@ -66,7 +49,9 @@ internal static class ValueParser
     {
         if (number is null) return false;
         if (number.Length != 12 || !number.All(char.IsDigit))
+        {
             return false;
+        }
         var calculatedControlNumber = GetDufNummerControlDigits(number[..10]);
         var controlNumber = int.Parse(number[10..]);
         return controlNumber == calculatedControlNumber;
@@ -83,21 +68,20 @@ internal static class ValueParser
     private static bool ValidateControlNumber(string number)
     {
         if (number.Length != 11 || !number.All(char.IsDigit))
+        {
             return false;
+        }
 
-        var digits = number.Select(c => c - '0').ToArray();
+        if (!Mod11.TryGetChecksumDigit(number[..9], FNrWeights1, out var checksum1) || checksum1 != number[9])
+        {
+            return false;
+        }
+        
+        if (!Mod11.TryGetChecksumDigit(number[..10], FNrWeights2, out var checksum2) || checksum2 != number[10])
+        {
+            return false;
+        }
 
-        // First control
-        var sum1 = digits.Take(9).Select((d, i) => d * FNrWeights1[i]).Sum();
-        var k1 = 11 - (sum1 % 11);
-        if (k1 == 11) k1 = 0;
-        if (k1 == 10 || k1 != digits[9]) return false;
-
-        // Second control
-        var sum2 = digits.Take(10).Select((d, i) => d * FNrWeights2[i]).Sum();
-        var k2 = 11 - (sum2 % 11);
-        if (k2 == 11) k2 = 0;
-        if (k2 == 10 || k2 != digits[10]) return false;
         return true;
     }
 

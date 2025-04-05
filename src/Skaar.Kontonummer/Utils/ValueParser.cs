@@ -1,3 +1,5 @@
+using Skaar.TypeSupport.Utils;
+
 namespace Skaar.Utils;
 
 internal static class ValueParser
@@ -18,25 +20,7 @@ internal static class ValueParser
         return control == value.Last();
     }
 
-    public static bool TryGetControlDigit(string value, out char result)
-    {
-        if (value.Length != 10 || !value.All(char.IsDigit))
-        {
-            result = '0';
-            return false;
-        }
-        var digits = value.Select(c => c - '0').ToArray();
-        var sum = digits.Take(10).Select((i, n) => i * Weights[n]).Sum();
-        var control = sum % 11;
-        if (control > 0) control = 11 - control;
-        if (control == 10)
-        {
-            result = '0';
-            return false;
-        }
-        result = control.ToString().Single();
-        return true;
-    }
+    public static bool TryGetControlDigit(string value, out char result) => Mod11.TryGetChecksumDigit(value, Weights, out result);
 
     public static string GetIbanNumber(string accountNumber)
     {
