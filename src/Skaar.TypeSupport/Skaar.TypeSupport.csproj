@@ -5,7 +5,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <PackageId>NorwegianTypes</PackageId>
+        <PackageId>Skaar.NorwegianTypes</PackageId>
         <PackageTags>norway domain validation</PackageTags>
         <Description>A library supporting the packages in the NorwegianTypes repo.</Description>
     </PropertyGroup>
