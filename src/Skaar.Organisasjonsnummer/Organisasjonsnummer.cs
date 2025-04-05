@@ -1,5 +1,6 @@
 ﻿using Skaar.TypeSupport.Contracts;
 using Skaar.TypeSupport.Serialization;
+using Skaar.TypeSupport.Utils;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -32,7 +33,7 @@ public readonly struct Organisasjonsnummer :
 
     private Organisasjonsnummer(string? value)
     {
-        _value = Utils.RemoveWhitespace(value);
+        _value = StringUtils.RemoveNonDigits(value);
         IsValid = Utils.ValidateNumber(_value);
     }
 

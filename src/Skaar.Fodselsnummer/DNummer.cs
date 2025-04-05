@@ -34,8 +34,8 @@ public readonly struct DNummer :
 
     private DNummer(string? value)
     {
-        _value = StringUtils.RemoveWhitespace(value);
-        IsValid = NummerParser.IsDNummer(_value);
+        _value = StringUtils.RemoveNonDigits(value);
+        IsValid = ValueParser.IsDNummer(_value);
     }
     
     public DateOnly BirthDate 
@@ -44,7 +44,7 @@ public readonly struct DNummer :
         {
             if (!IsValid) return default;
             var day = int.Parse(_value[..2]) - 40;
-            if (NummerParser.ValidateBirthDate($"{day:00}{_value[2..]}", out var result))
+            if (ValueParser.ValidateBirthDate($"{day:00}{_value[2..]}", out var result))
             {
                 return result;
             }
@@ -81,12 +81,12 @@ public readonly struct DNummer :
         return result.IsValid;
     }
 
-    public static DNummer CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<DNummer>(value, provider);
+    public static DNummer CreateNew(string? value, IFormatProvider? provider = null) => TypeSupport.Serialization.Parser.SafeParse<DNummer>(value, provider);
     public static DNummer CreateNew()
     {
         var date = DateOnly.FromDateTime(new DateTime(1940, 1, 1) + TimeSpan.FromDays(Random.Shared.Next(365 * 100)));
         var gender = Gender.Undefined;
-        return CreateNew(NummerFactory.CreateNew(NummerType.DNummer, date, gender));
+        return CreateNew(ValueFactory.CreateNew(NummerType.DNummer, date, gender));
     }
 
     public override string ToString() => _value ?? string.Empty;

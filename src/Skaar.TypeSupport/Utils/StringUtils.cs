@@ -13,6 +13,19 @@ public static partial class StringUtils
 
         return RemoveSpacesPattern().Replace(rawValue, "");
     }
+
+    public static string? RemoveNonDigits(string? rawValue)
+    {
+        if (rawValue == null)
+        {
+            return rawValue;
+        }
+        return RemoveNonDigitsPattern().Replace(rawValue, "");
+    }
+    
     [GeneratedRegex(@"\s+")]
     private static partial Regex RemoveSpacesPattern();
+    
+    [GeneratedRegex(@"\D+")]
+    private static partial Regex RemoveNonDigitsPattern();
 }

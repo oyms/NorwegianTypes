@@ -34,8 +34,8 @@ public readonly struct DufNummer :
 
     private DufNummer(string? value)
     {
-        _value = StringUtils.RemoveWhitespace(value);
-        IsValid = NummerParser.IsDufNummer(_value);
+        _value = StringUtils.RemoveNonDigits(value);
+        IsValid = ValueParser.IsDufNummer(_value);
     }
     
     [MemberNotNullWhen(true, nameof(_value))]
@@ -56,12 +56,12 @@ public readonly struct DufNummer :
         return result.IsValid;
     }
 
-    public static DufNummer CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<DufNummer>(value, provider);
+    public static DufNummer CreateNew(string? value, IFormatProvider? provider = null) => TypeSupport.Serialization.Parser.SafeParse<DufNummer>(value, provider);
     public static DufNummer CreateNew()
     {
         var date = DateOnly.FromDateTime(new DateTime(1940, 1, 1) + TimeSpan.FromDays(Random.Shared.Next(365 * 100)));
         var gender = Gender.Undefined;
-        return CreateNew(NummerFactory.CreateNew(NummerType.DufNummer ,date, gender));
+        return CreateNew(ValueFactory.CreateNew(NummerType.DufNummer ,date, gender));
     }
 
     public override string ToString() => _value ?? string.Empty;

@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Skaar</RootNamespace>
-        <PackageId>Organisasjonsnummer</PackageId>
+        <PackageId>Skaar.Organisasjonsnummer</PackageId>
         <PackageTags>norway organisasjonsnummer domain mod11 validation</PackageTags>
         <Description>A library implementing a type for Norwegian organization numbers.</Description>
     </PropertyGroup>

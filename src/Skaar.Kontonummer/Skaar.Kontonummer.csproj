@@ -1,15 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <Import Project="..\CommonProps.targets" />
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Skaar</RootNamespace>
-        <PackageId>Skaar.Fodselsnummer</PackageId>
-        <PackageTags>norway fødselsnummer d-nummer duf-nummer domain mod11 validation</PackageTags>
-        <Description>A library implementing a type for Norwegian identification numbers.</Description>
+        <PackageId>Skaar.Kontonummer</PackageId>
+        <PackageTags>norway bank account domain mod11 validation IBAN</PackageTags>
+        <Description>A library implementing a type for Norwegian bank account numbers.</Description>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Skaar.TypeSupport\Skaar.TypeSupport.csproj" />

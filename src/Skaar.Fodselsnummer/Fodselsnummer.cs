@@ -35,8 +35,8 @@ public readonly struct Fodselsnummer :
 
     private Fodselsnummer(string? value)
     {
-        _value = StringUtils.RemoveWhitespace(value);
-        IsValid = NummerParser.IsFodselsnummer(_value);
+        _value = StringUtils.RemoveNonDigits(value);
+        IsValid = ValueParser.IsFodselsnummer(_value);
     }
     
     /// <remarks>
@@ -49,7 +49,7 @@ public readonly struct Fodselsnummer :
     {
         get
         {
-            if(!IsValid || !NummerParser.ValidateBirthDate(_value!, out var date)) return default;
+            if(!IsValid || !ValueParser.ValidateBirthDate(_value!, out var date)) return default;
             return date;
         }
     }
@@ -87,12 +87,12 @@ public readonly struct Fodselsnummer :
         return result.IsValid;
     }
 
-    public static Fodselsnummer CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<Fodselsnummer>(value, provider);
+    public static Fodselsnummer CreateNew(string? value, IFormatProvider? provider = null) => TypeSupport.Serialization.Parser.SafeParse<Fodselsnummer>(value, provider);
     public static Fodselsnummer CreateNew()
     {
         var date = DateOnly.FromDateTime(new DateTime(1940, 1, 1) + TimeSpan.FromDays(Random.Shared.Next(365 * 100)));
         var gender = Gender.Undefined;
-        return CreateNew(NummerFactory.CreateNew(NummerType.Fodselsnummer ,date, gender));
+        return CreateNew(ValueFactory.CreateNew(NummerType.Fodselsnummer ,date, gender));
     }
 
     public override string ToString() => _value ?? string.Empty;

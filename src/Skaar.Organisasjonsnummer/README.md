@@ -10,6 +10,6 @@ a string containing an org number.
 - With JsonConverter and type converter
 - Parsing includes validation logic
 - Equality and comparison
-- Can create new random valid values (for testing purposes).
+- Can create new random valid values (for testing purposes)
 
 ![Icon](https://raw.githubusercontent.com/oyms/NorwegianTypes/refs/heads/main/.idea/.idea.Skaar.NorwegianTypes/.idea/icon.svg)

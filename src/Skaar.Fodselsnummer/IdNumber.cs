@@ -34,8 +34,8 @@ public readonly struct IdNumber :
 
     private IdNumber(string? value)
     {
-        _value = StringUtils.RemoveWhitespace(value);
-        Type = NummerParser.ParseIdNummer(_value);
+        _value = StringUtils.RemoveNonDigits(value);
+        Type = ValueParser.ParseIdNummer(_value);
     }
 
     public NummerType Type { get; }
@@ -56,7 +56,7 @@ public readonly struct IdNumber :
         return result.IsValid;
     }
 
-    public static IdNumber CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<IdNumber>(value, provider);
+    public static IdNumber CreateNew(string? value, IFormatProvider? provider = null) => TypeSupport.Serialization.Parser.SafeParse<IdNumber>(value, provider);
     
     [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid => Type != NummerType.Invalid;
@@ -69,7 +69,7 @@ public readonly struct IdNumber :
     {
         var date = DateOnly.FromDateTime(new DateTime(1940, 1, 1) + TimeSpan.FromDays(Random.Shared.Next(365 * 100)));
         var gender = Gender.Undefined;
-        return CreateNew(NummerFactory.CreateNew(NummerType.Fodselsnummer ,date, gender));
+        return CreateNew(ValueFactory.CreateNew(NummerType.Fodselsnummer ,date, gender));
     }
 
     public override bool Equals(object? obj)

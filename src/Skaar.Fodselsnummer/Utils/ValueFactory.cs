@@ -2,7 +2,7 @@ using Skaar.Contracts;
 
 namespace Skaar.Utils;
 
-internal static class NummerFactory
+internal static class ValueFactory
 {
     public static string CreateNew(NummerType type, DateOnly date, Gender gender) =>
         type switch
@@ -18,7 +18,7 @@ internal static class NummerFactory
         var individualPart = GetIndiviualNumber(date.Year, gender);
 
         var number = $"{encodedDate}{individualPart:000}";
-        if (NummerParser.TryGetChecksum(NummerType.Fodselsnummer, number.Select(c => c - '0').ToArray(), out int checksum))
+        if (ValueParser.TryGetChecksum(NummerType.Fodselsnummer, number.Select(c => c - '0').ToArray(), out int checksum))
         {
             return $"{number}{checksum:00}";
         }
@@ -35,7 +35,7 @@ internal static class NummerFactory
     private static string CreateDufNummer(DateOnly date)
     {
         var firstPart = $"{date:yyyy}{Random.Shared.Next(1, 999999):000000}";
-        return $"{firstPart}{NummerParser.GetDufNummerControlDigits(firstPart):00}";
+        return $"{firstPart}{ValueParser.GetDufNummerControlDigits(firstPart):00}";
     }
 
     private static int GetIndiviualNumber(int year, Gender gender)

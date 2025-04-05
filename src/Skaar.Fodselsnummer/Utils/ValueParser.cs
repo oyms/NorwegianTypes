@@ -2,7 +2,7 @@ using Skaar.Contracts;
 
 namespace Skaar.Utils;
 
-internal static class NummerParser
+internal static class ValueParser
 {
     private static readonly int[] FNrWeights1 = [3, 7, 6, 1, 8, 9, 4, 5, 2];
     private static readonly int[] FNrWeights2 = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
