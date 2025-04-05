@@ -11,12 +11,31 @@ internal static class ValueParser
     {
         if (value is null) return false;
         if (value.Length != 11 || !value.All(char.IsDigit)) return false;
+        if (!TryGetControlDigit(value[..10], out var control))
+        {
+            return false;
+        }
+        return control == value.Last();
+    }
+
+    public static bool TryGetControlDigit(string value, out char result)
+    {
+        if (value.Length != 10 || !value.All(char.IsDigit))
+        {
+            result = '0';
+            return false;
+        }
         var digits = value.Select(c => c - '0').ToArray();
         var sum = digits.Take(10).Select((i, n) => i * Weights[n]).Sum();
         var control = sum % 11;
         if (control > 0) control = 11 - control;
-
-        return control != 10 && control == digits.Last();
+        if (control == 10)
+        {
+            result = '0';
+            return false;
+        }
+        result = control.ToString().Single();
+        return true;
     }
 
     public static string GetIbanNumber(string accountNumber)

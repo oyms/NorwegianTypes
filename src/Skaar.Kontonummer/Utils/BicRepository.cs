@@ -8,6 +8,7 @@ namespace Skaar.Utils;
 internal static class BicRepository
 {
     private static IDictionary<string, Bank>? _banks;
+    public static IDictionary<string, Bank> Banks => _banks ??= ReadBicList();
     private static IDictionary<string, Bank> ReadBicList()
     {
         var assembly = Assembly.GetExecutingAssembly();
@@ -23,8 +24,14 @@ internal static class BicRepository
 
     public static Bank Lookup(string id)
     {
-        var records = _banks ??= ReadBicList();
-        if(records.TryGetValue(id, out var record)) return record;
+        if(Banks.TryGetValue(id, out var record)) return record;
         return Bank.Undefined;
+    }
+
+    public static string GetRandomId()
+    {
+        var all = Banks.Keys;
+        var index = Random.Shared.Next(all.Count - 1);
+        return all.Skip(index).First();
     }
 }

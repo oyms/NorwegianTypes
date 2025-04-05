@@ -1,8 +1,8 @@
 using System.Text.RegularExpressions;
 
-namespace Skaar;
+namespace Skaar.Utils;
 
-internal static partial class Utils
+internal static partial class Factory
 {
     /// <remarks>
     /// <seealso href="https://www.brreg.no/en/about-us-2/our-registers/about-the-central-coordinating-register-for-legal-entities-ccr/about-the-organisation-number/?nocache=1743537931351"/>
@@ -63,22 +63,10 @@ internal static partial class Utils
                 return Organisasjonsnummer.Parse(string.Concat(digits));
             }
     }
-    
-    public static string? RemoveWhitespace(string? rawValue)
-    {
-        if (rawValue == null)
-        {
-            return rawValue;
-        }
-
-        return RemoveSpacesPattern().Replace(rawValue, "");
-    }
 
     public static string FormatNumberWithSpacing(Organisasjonsnummer number) => InsertSpacesPattern().Replace(number.ToString(), "$1\u00A0");
 
 
-    [GeneratedRegex(@"NO\-BRC\-|\s+")]
-    private static partial Regex RemoveSpacesPattern();
     [GeneratedRegex(@"(\d{3})(?=\d)")]
     private static partial Regex InsertSpacesPattern();
 }

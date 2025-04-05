@@ -5,6 +5,7 @@ using Skaar.Utils;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Text.Json.Serialization;
 
 namespace Skaar;
@@ -24,7 +25,9 @@ public readonly struct Kontonummer :
     ISafeParsable<Kontonummer>,
     ICanBeValid,
     IEquatable<Kontonummer>,
-    IComparable<Kontonummer>
+    IComparable<Kontonummer>,
+    IComparisonOperators<Kontonummer,Kontonummer, bool>,
+    IRandomValueFactory<Kontonummer>
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private readonly string? _value;
@@ -102,6 +105,8 @@ public readonly struct Kontonummer :
     public Bank Bank => IsValid ? BicRepository.Lookup(_value[..4]) : Bank.Undefined;
     
     public bool Equals(Kontonummer other) => _value == other._value;
+
+    public static Kontonummer CreateNew() => CreateNew(Factory.GenerateRandom());
 
     public override bool Equals(object? obj) => obj is Kontonummer other && Equals(other);
 

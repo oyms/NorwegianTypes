@@ -1,6 +1,7 @@
 ﻿using Skaar.TypeSupport.Contracts;
 using Skaar.TypeSupport.Serialization;
 using Skaar.TypeSupport.Utils;
+using Skaar.Utils;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -34,13 +35,13 @@ public readonly struct Organisasjonsnummer :
     private Organisasjonsnummer(string? value)
     {
         _value = StringUtils.RemoveNonDigits(value);
-        IsValid = Utils.ValidateNumber(_value);
+        IsValid = Factory.ValidateNumber(_value);
     }
 
     /// <summary>
     /// Creates a new random valid value.
     /// </summary>
-    public static Organisasjonsnummer CreateNew() => Utils.GenerateRandom();
+    public static Organisasjonsnummer CreateNew() => Factory.GenerateRandom();
 
     /// <summary>
     /// Parses the string (as with <see cref="Parse"/>
@@ -96,7 +97,7 @@ public readonly struct Organisasjonsnummer :
         if (!IsValid) return ToString();
         return formatting switch
         {
-            OrganisasjonsnummerFormatting.WithSpaces => Utils.FormatNumberWithSpacing(this),
+            OrganisasjonsnummerFormatting.WithSpaces => Factory.FormatNumberWithSpacing(this),
             OrganisasjonsnummerFormatting.OrgIdFormat => $"NO-BRC-{_value}",
             _ => ToString()
         };
