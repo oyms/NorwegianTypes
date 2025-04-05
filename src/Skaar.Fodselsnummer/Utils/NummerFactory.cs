@@ -1,5 +1,4 @@
 using Skaar.Contracts;
-using System.Runtime.InteropServices.JavaScript;
 
 namespace Skaar.Utils;
 
@@ -41,22 +40,22 @@ internal static class NummerFactory
 
     private static int GetIndiviualNumber(int year, Gender gender)
     {
-        int GetNumberInRange(int min, int max, Gender gender)
+        int GetNumberInRange(int min, int max)
         {
             var number = Random.Shared.Next(min, max);
             if (gender == Gender.Female && number % 2 == 1)
             {
-                return GetNumberInRange(min, max, gender);
+                return GetNumberInRange(min, max);
             }
             return number;
         }
 
         return year switch
         {
-            < 1900 => GetNumberInRange(500, 749, gender),
-            >= 1940 and < 2000 => GetNumberInRange(900, 999, gender),
-            < 2000 => GetNumberInRange(000, 499, gender),
-            _ => GetNumberInRange(500, 999, gender)
+            < 1900 => GetNumberInRange(500, 749),
+            >= 1940 and < 2000 => GetNumberInRange(900, 999),
+            < 2000 => GetNumberInRange(000, 499),
+            _ => GetNumberInRange(500, 999)
         };
     }
     

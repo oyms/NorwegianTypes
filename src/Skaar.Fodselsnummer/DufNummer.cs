@@ -38,6 +38,7 @@ public readonly struct DufNummer :
         IsValid = NummerParser.IsDufNummer(_value);
     }
     
+    [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid { get; }
     public static DufNummer Parse(string s, IFormatProvider? provider)
     {

@@ -57,7 +57,8 @@ public readonly struct IdNumber :
     }
 
     public static IdNumber CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<IdNumber>(value, provider);
-
+    
+    [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid => Type != NummerType.Invalid;
 
     public override string ToString() => _value ?? string.Empty;

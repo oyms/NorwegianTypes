@@ -123,6 +123,8 @@ public readonly struct Organisasjonsnummer :
     /// Returns true if the value is valid.
     /// </summary>
     /// <seealso href="https://www.brreg.no/en/about-us-2/our-registers/about-the-central-coordinating-register-for-legal-entities-ccr/about-the-organisation-number/?nocache=1743537931351"/>
+    
+    [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid { get; }
     
 }

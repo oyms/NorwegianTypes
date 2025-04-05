@@ -15,7 +15,7 @@ public class SerializingTests
         }
         """;
         var result = JsonSerializer.Deserialize<TargetType>(json);
-        result.OrgNr.ToString().ShouldBe("841348192");
+        result!.OrgNr.ToString().ShouldBe("841348192");
     }
 
     [Fact]

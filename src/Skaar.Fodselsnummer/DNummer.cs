@@ -58,11 +58,12 @@ public readonly struct DNummer :
         get
         {
             if(!IsValid) return default;
-            var genderDigit = _value![8] - '0';
+            var genderDigit = _value[8] - '0';
             return genderDigit % 2 == 0 ? Gender.Female : Gender.Male;
         }
     }
     
+    [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid { get; }
     public static DNummer Parse(string s, IFormatProvider? provider)
     {

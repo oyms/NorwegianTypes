@@ -30,7 +30,7 @@ internal static class NummerParser
                     {
                         result = 0;
                         return false;
-                    };
+                    }
                     var sum2 = digits.Append(k1).Select((d, i) => d * FNrWeights2[i]).Sum();
                     var k2 = 11 - (sum2 % 11);
                     if (k2 == 11) k2 = 0;
@@ -138,6 +138,7 @@ internal static class NummerParser
                 fullYear = 2000 + year;
             }
         }
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalse
         else if (individNr >= 500 && year <= 39)
         {
             fullYear = 2000 + year;

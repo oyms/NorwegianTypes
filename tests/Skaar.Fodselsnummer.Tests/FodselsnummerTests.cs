@@ -24,6 +24,7 @@ public class FodselsnummerTests(ITestContextAccessor testContext)
         result.IsValid.ShouldBeTrue();
     }
     
+    [Theory]
     [InlineData("131018x9636")]
     [InlineData("30076814392")]
     public void TryParse_WithInvalidNumber_IsNotValid(string number)
@@ -35,7 +36,7 @@ public class FodselsnummerTests(ITestContextAccessor testContext)
     [Fact]
     public void CreateNew_OnIdNummer_CreatesValidFodselsnummer()
     {
-        var @out = testContext.Current.TestOutputHelper; 
+        var @out = testContext.Current.TestOutputHelper!; 
         const int n = 10;
         for (int i = 0; i < n; i++)
         {

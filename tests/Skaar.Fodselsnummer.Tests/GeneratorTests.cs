@@ -1,6 +1,5 @@
 using Shouldly;
 using Skaar.Contracts;
-using Skaar.Utils;
 using Xunit;
 
 namespace Skaar.FodselsnummerTests;
@@ -10,7 +9,7 @@ public class GeneratorTests(ITestContextAccessor testContext)
     [Fact]
     public void CreateNew_OnIdNummer_CreatesValidFodselsnummer()
     {
-        var @out = testContext.Current.TestOutputHelper; 
+        var @out = testContext.Current.TestOutputHelper!; 
         const int n = 10;
         for (int i = 0; i < n; i++)
         {
