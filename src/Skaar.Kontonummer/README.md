@@ -14,4 +14,14 @@ a string containing an account number.
 - IBAN bank lookup
 - Account type
 
+**Usage:**
+```C#
+var rawInput = "32445395551";
+var number = Kontonummer.CreateNew(rawInput); //alt. use Parse or TryParse
+var validity = number.IsValid;
+var iban = number.Iban;
+var bank = number.Bank;
+var result = number.ToString();
+```
+
 ![Icon](https://raw.githubusercontent.com/oyms/NorwegianTypes/refs/heads/main/.idea/.idea.Skaar.NorwegianTypes/.idea/icon.svg)

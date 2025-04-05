@@ -20,4 +20,14 @@ The type `Skaar.IdNumber` may represent any of the numbers.
 
 `Skaar.Utils.IdNumberFactory` can be used to create new random values. 
 
+
+**Usage:**
+```C#
+var rawInput = "23072388054";
+var number = Fodselsnummer.CreateNew(rawInput); //alt. use Parse or TryParse
+var validity = number.IsValid;
+var birthDate = number.BirthDate;
+var result = number.ToString();
+```
+
 ![Icon](https://raw.githubusercontent.com/oyms/NorwegianTypes/refs/heads/main/.idea/.idea.Skaar.NorwegianTypes/.idea/icon.svg)

@@ -12,4 +12,13 @@ a string containing an org number.
 - Equality and comparison
 - Can create new random valid values (for testing purposes)
 
+
+**Usage:**
+```C#
+var rawInput = "931309080";
+var number = Organisasjonsnummer.CreateNew(rawInput); //alt. use Parse or TryParse
+var validity = number.IsValid;
+var result = number.ToString();
+```
+
 ![Icon](https://raw.githubusercontent.com/oyms/NorwegianTypes/refs/heads/main/.idea/.idea.Skaar.NorwegianTypes/.idea/icon.svg)
