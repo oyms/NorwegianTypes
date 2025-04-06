@@ -7,8 +7,8 @@ namespace Skaar.Utils;
 
 internal static class BicRepository
 {
-    private static IDictionary<string, Bank>? _banks;
-    public static IDictionary<string, Bank> Banks => _banks ??= ReadBicList();
+    private static readonly Lazy<IDictionary<string, Bank>> BanksList = new(ReadBicList);
+    public static IDictionary<string, Bank> Banks => BanksList.Value;
     private static IDictionary<string, Bank> ReadBicList()
     {
         var assembly = Assembly.GetExecutingAssembly();
