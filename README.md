@@ -1,7 +1,7 @@
 Norwegian types 🇳🇴
 ===
 
-![Logo](./resources/logo.png)
+<img alt="icon" style="width: 200px;" src="./resources/logo.png" />
 
 This repository contain code for
 implementing common norwegian domain types.
