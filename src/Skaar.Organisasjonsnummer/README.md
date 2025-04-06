@@ -21,4 +21,4 @@ var validity = number.IsValid;
 var result = number.ToString();
 ```
 
-<img alt="icon" style="width: 200px;" src="https://raw.githubusercontent.com/oyms/NorwegianTypes/refs/heads/main/.idea/.idea.Skaar.NorwegianTypes/.idea/icon.svg" />
+![Icon](https://raw.githubusercontent.com/oyms/NorwegianTypes/refs/heads/main/.idea/.idea.Skaar.NorwegianTypes/.idea/icon.svg)
