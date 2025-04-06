@@ -24,6 +24,8 @@ public readonly struct IdNumber :
     IIdNumber,
     ISpanParsable<IdNumber>,
     ISafeParsable<IdNumber>,
+    ISpanFormattable,
+    IHasLength,
     IEquatable<IdNumber>,
     IComparable<IdNumber>,
     IComparisonOperators<IdNumber, IdNumber, bool>,
@@ -76,8 +78,15 @@ public readonly struct IdNumber :
     
     [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid => Type != NummerType.Invalid;
+    public int Length => _value.Length;
 
     public override string ToString() => _value.ToString();
+        
+    public string ToString(string? format, IFormatProvider? formatProvider) => ToString();
+
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
+        IFormatProvider? provider) =>
+        StringUtils.TryFormatIgnoringFormatting(_value, destination, out charsWritten, format, provider);
 
     public bool Equals(IdNumber other) => Type == other.Type && _value.Span.SequenceEqual(other._value.Span);
 

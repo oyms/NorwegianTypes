@@ -24,6 +24,8 @@ public readonly struct DNummer :
     IIdNumber,
     ISpanParsable<DNummer>,
     ISafeParsable<DNummer>,
+    ISpanFormattable,
+    IHasLength,
     IEquatable<DNummer>,
     IComparable<DNummer>,
     IRandomValueFactory<DNummer>,
@@ -104,8 +106,14 @@ public readonly struct DNummer :
         var gender = Gender.Undefined;
         return CreateNew(ValueFactory.CreateNew(NummerType.DNummer, date, gender));
     }
-
+    public int Length => _value.Length;
     public override string ToString() => _value.ToString();
+        
+    public string ToString(string? format, IFormatProvider? formatProvider) => ToString();
+
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
+        IFormatProvider? provider) =>
+        StringUtils.TryFormatIgnoringFormatting(_value, destination, out charsWritten, format, provider);
 
     public bool Equals(DNummer other) => _value.Span.SequenceEqual(other._value.Span);
 

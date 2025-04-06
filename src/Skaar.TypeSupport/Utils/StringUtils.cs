@@ -36,4 +36,25 @@ public static class StringUtils
         buffer[..j].CopyTo(result);
         return result;
     }
+
+    public static bool TryFormatIgnoringFormatting(ReadOnlyMemory<char> source, Span<char> destination,
+        out int charsWritten, ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+    {
+        if (!format.IsEmpty && format is not "G")
+        {
+            throw new FormatException("Only general format 'G' is supported.");
+        }
+        var span = source.Span;
+
+        if (span.Length > destination.Length)
+        {
+            charsWritten = 0;
+            return false; // Not enough space
+        }
+
+        span.CopyTo(destination);
+        charsWritten = span.Length;
+        return true;
+    }
 }

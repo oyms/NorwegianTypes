@@ -21,11 +21,13 @@ namespace Skaar;
 [TypeConverter(typeof(ParsableTypeConverter<Organisasjonsnummer>))]
 [DebuggerDisplay("{ToString(OrganisasjonsnummerFormatting.WithSpaces)}")]
 public readonly struct Organisasjonsnummer : 
-    ISpanParsable<Organisasjonsnummer>, 
+    ISpanParsable<Organisasjonsnummer>,
+    ISpanFormattable,
     IEquatable<Organisasjonsnummer>, 
     IComparable<Organisasjonsnummer>,
     IComparisonOperators<Organisasjonsnummer, Organisasjonsnummer, bool>,
     ICanBeValid,
+    IHasLength,
     IRandomValueFactory<Organisasjonsnummer>,
     ISafeParsable<Organisasjonsnummer>
 {
@@ -44,7 +46,7 @@ public readonly struct Organisasjonsnummer :
     public static Organisasjonsnummer CreateNew() => ValidationRules.GenerateRandom();
 
     /// <summary>
-    /// Parses the string (as with <see cref="Parse"/>
+    /// Parses the string (as with <see cref="Parse(string, IFormatProvider)"/>
     /// but will not throw expcetion when invalid.
     /// <seealso cref="IsValid"/>
     /// </summary>
@@ -99,10 +101,7 @@ public readonly struct Organisasjonsnummer :
     /// Returns the inner value.
     /// </summary>
     /// <remarks>If inner value is <c>null</c>, an empty string is returned.</remarks>
-    public override string ToString()
-    {
-        return _value .ToString();
-    }
+    public override string ToString() => _value.ToString();
 
     /// <summary>
     /// Returns the inner value formatted.
@@ -119,6 +118,12 @@ public readonly struct Organisasjonsnummer :
             _ => ToString()
         };
     }
+    
+    public string ToString(string? format, IFormatProvider? formatProvider) => ToString();
+
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
+        IFormatProvider? provider) =>
+        StringUtils.TryFormatIgnoringFormatting(_value, destination, out charsWritten, format, provider);
 
     public override int GetHashCode() => HashCode.Combine(_value);
 
@@ -145,5 +150,6 @@ public readonly struct Organisasjonsnummer :
     
     [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid { get; }
-    
+
+    public int Length => _value.Length;
 }

@@ -27,6 +27,8 @@ public readonly struct Fodselsnummer :
     ISafeParsable<Fodselsnummer>,
     IEquatable<Fodselsnummer>,
     IComparable<Fodselsnummer>,
+    ISpanFormattable,
+    IHasLength,
     IRandomValueFactory<Fodselsnummer>,
     IComparisonOperators<Fodselsnummer, Fodselsnummer, bool>
 {
@@ -109,8 +111,14 @@ public readonly struct Fodselsnummer :
         var gender = Gender.Undefined;
         return CreateNew(ValueFactory.CreateNew(NummerType.Fodselsnummer ,date, gender));
     }
-
+    public int Length => _value.Length;
     public override string ToString() => _value.ToString();
+    
+    public string ToString(string? format, IFormatProvider? formatProvider) => ToString();
+
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
+        IFormatProvider? provider) =>
+        StringUtils.TryFormatIgnoringFormatting(_value, destination, out charsWritten, format, provider);
 
     public bool Equals(Fodselsnummer other) => _value.Span.SequenceEqual(other._value.Span);
 

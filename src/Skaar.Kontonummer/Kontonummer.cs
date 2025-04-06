@@ -23,7 +23,9 @@ namespace Skaar;
 public readonly struct Kontonummer :
     ISpanParsable<Kontonummer>,
     ISafeParsable<Kontonummer>,
+    ISpanFormattable,
     ICanBeValid,
+    IHasLength,
     IEquatable<Kontonummer>,
     IComparable<Kontonummer>,
     IComparisonOperators<Kontonummer,Kontonummer, bool>,
@@ -74,6 +76,7 @@ public readonly struct Kontonummer :
     
     [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid { get; }
+    public int Length => _value.Length;
 
     public override string ToString() => ToString(KontonummerFormatting.None);
 
@@ -96,6 +99,12 @@ public readonly struct Kontonummer :
             _ => throw new ArgumentException("Unknown formatting")
         };
     }
+    
+    public string ToString(string? format, IFormatProvider? formatProvider) => ToString();
+
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
+        IFormatProvider? provider) =>
+        StringUtils.TryFormatIgnoringFormatting(_value, destination, out charsWritten, format, provider);
 
     /// <summary>
     /// IBAN (International Bank Account Number)
