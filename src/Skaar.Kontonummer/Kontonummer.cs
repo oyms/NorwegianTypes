@@ -30,12 +30,12 @@ public readonly struct Kontonummer :
     IRandomValueFactory<Kontonummer>
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private readonly string? _value;
+    private readonly ReadOnlyMemory<char> _value;
     
     private Kontonummer(string? value)
     {
         _value = StringUtils.RemoveNonDigits(value);
-        IsValid = ValueParser.ValidateNumber(_value);
+        IsValid = ValueParser.ValidateNumber(_value.Span);
     }
     
     public static Kontonummer Parse(string s, IFormatProvider? provider = null)
@@ -69,10 +69,10 @@ public readonly struct Kontonummer :
             var iban = that.Iban;
             return $"{iban[..4]} {iban[4..8]} {iban[8..12]} {iban[12..]}";
         }
-        if (!IsValid) return _value ?? string.Empty;
+        if (!IsValid) return _value.ToString();
         return formatting switch
         {
-            KontonummerFormatting.None => _value,
+            KontonummerFormatting.None => _value.ToString(),
             KontonummerFormatting.Periods => $"{_value[..4]}.{_value[4..6]}.{_value[6..]}",
             KontonummerFormatting.Spaces => $"{_value[..4]} {_value[4..6]} {_value[6..]}",
             KontonummerFormatting.IbanScreen => Iban,
@@ -90,27 +90,27 @@ public readonly struct Kontonummer :
         get
         {
             if (!IsValid) return string.Empty;
-            return ValueParser.GetIbanNumber(_value);
+            return ValueParser.GetIbanNumber(_value.Span);
         }
     }
 
     /// <summary>
     /// The type, based on the account series
     /// </summary>
-    public AccountType AccountType => IsValid ? ValueParser.GetAccountType(_value) : AccountType.Undefined;
+    public AccountType AccountType => IsValid ? ValueParser.GetAccountType(_value.Span) : AccountType.Undefined;
     
     /// <summary>
     /// The bank holding the account (based on a lookup in the bic registry)
     /// </summary>
-    public Bank Bank => IsValid ? BicRepository.Lookup(_value[..4]) : Bank.Undefined;
+    public Bank Bank => IsValid ? BicRepository.Lookup(_value.Span[..4].ToString()) : Bank.Undefined;
     
-    public bool Equals(Kontonummer other) => _value == other._value;
+    public bool Equals(Kontonummer other) => _value.Span.SequenceEqual(other._value.Span);
 
     public static Kontonummer CreateNew() => CreateNew(Factory.GenerateRandom());
 
     public override bool Equals(object? obj) => obj is Kontonummer other && Equals(other);
 
-    public override int GetHashCode() => _value != null ? _value.GetHashCode() : 0;
+    public override int GetHashCode() => _value.GetHashCode();
 
     public static bool operator ==(Kontonummer left, Kontonummer right) => left.Equals(right);
 
@@ -124,7 +124,7 @@ public readonly struct Kontonummer :
             return isValidComparison;
         }
 
-        return string.Compare(_value, other._value, StringComparison.OrdinalIgnoreCase);
+        return StringUtils.MemoryCompare(_value, other._value);
     }
 
     public static bool operator <(Kontonummer left, Kontonummer right) => left.CompareTo(right) < 0;

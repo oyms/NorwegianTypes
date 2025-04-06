@@ -30,12 +30,12 @@ public readonly struct IdNumber :
     IRandomValueFactory<IdNumber>
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private readonly string? _value;
+    private readonly ReadOnlyMemory<char> _value;
 
     private IdNumber(string? value)
     {
         _value = StringUtils.RemoveNonDigits(value);
-        Type = ValueParser.ParseIdNummer(_value);
+        Type = ValueParser.ParseIdNummer(_value.Span);
     }
 
     public NummerType Type { get; }
@@ -61,9 +61,9 @@ public readonly struct IdNumber :
     [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid => Type != NummerType.Invalid;
 
-    public override string ToString() => _value ?? string.Empty;
+    public override string ToString() => _value.ToString();
 
-    public bool Equals(IdNumber other) => Type == other.Type && _value == other._value;
+    public bool Equals(IdNumber other) => Type == other.Type && _value.Span.SequenceEqual(other._value.Span);
 
     public static IdNumber CreateNew()
     {
@@ -82,7 +82,7 @@ public readonly struct IdNumber :
         return HashCode.Combine(_value, (int)Type);
     }
 
-    public int CompareTo(IdNumber other) => string.Compare(_value, other._value, StringComparison.OrdinalIgnoreCase);
+    public int CompareTo(IdNumber other) => StringUtils.MemoryCompare(_value, other._value);
 
     public static bool operator ==(IdNumber left, IdNumber right) => left.Equals(right);
 

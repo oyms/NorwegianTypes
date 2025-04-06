@@ -30,12 +30,12 @@ public readonly struct DNummer :
     IComparisonOperators<DNummer, DNummer, bool>
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private readonly string? _value;
+    private readonly ReadOnlyMemory<char> _value;
 
     private DNummer(string? value)
     {
         _value = StringUtils.RemoveNonDigits(value);
-        IsValid = ValueParser.IsDNummer(_value);
+        IsValid = ValueParser.IsDNummer(_value.Span);
     }
     
     public DateOnly BirthDate 
@@ -43,7 +43,7 @@ public readonly struct DNummer :
         get
         {
             if (!IsValid) return default;
-            var day = int.Parse(_value[..2]) - 40;
+            var day = int.Parse(_value.Span[..2]) - 40;
             if (ValueParser.ValidateBirthDate($"{day:00}{_value[2..]}", out var result))
             {
                 return result;
@@ -58,7 +58,7 @@ public readonly struct DNummer :
         get
         {
             if(!IsValid) return default;
-            var genderDigit = _value[8] - '0';
+            var genderDigit = _value.Span[8] - '0';
             return genderDigit % 2 == 0 ? Gender.Female : Gender.Male;
         }
     }
@@ -89,13 +89,13 @@ public readonly struct DNummer :
         return CreateNew(ValueFactory.CreateNew(NummerType.DNummer, date, gender));
     }
 
-    public override string ToString() => _value ?? string.Empty;
+    public override string ToString() => _value.ToString();
 
-    public bool Equals(DNummer other) => _value == other._value;
+    public bool Equals(DNummer other) => _value.Span.SequenceEqual(other._value.Span);
 
     public override bool Equals(object? obj) => obj is DNummer other && Equals(other);
 
-    public override int GetHashCode() => (_value != null ? _value.GetHashCode() : 0);
+    public override int GetHashCode() => _value.GetHashCode();
 
     public static bool operator ==(DNummer left, DNummer right) => left.Equals(right);
 
@@ -109,7 +109,7 @@ public readonly struct DNummer :
             return isValidComparison;
         }
 
-        return string.Compare(_value, other._value, StringComparison.Ordinal);
+        return StringUtils.MemoryCompare(_value, other._value);
     }
 
     public static bool operator <(DNummer left, DNummer right) => left.CompareTo(right) < 0;

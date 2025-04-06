@@ -30,12 +30,12 @@ public readonly struct Organisasjonsnummer :
     ISafeParsable<Organisasjonsnummer>
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private readonly string? _value;
+    private readonly ReadOnlyMemory<char> _value;
 
     private Organisasjonsnummer(string? value)
     {
         _value = StringUtils.RemoveNonDigits(value);
-        IsValid = ValidationRules.ValidateNumber(_value);
+        IsValid = ValidationRules.ValidateNumber(_value.Span);
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ public readonly struct Organisasjonsnummer :
     /// <remarks>If inner value is <c>null</c>, an empty string is returned.</remarks>
     public override string ToString()
     {
-        return _value ?? string.Empty;
+        return _value .ToString();
     }
 
     /// <summary>
@@ -106,8 +106,8 @@ public readonly struct Organisasjonsnummer :
     public override int GetHashCode() => HashCode.Combine(_value);
 
     public override bool Equals(object? obj) => obj is Organisasjonsnummer other && Equals(other);
-    public bool Equals(Organisasjonsnummer other) => string.Equals(_value, other._value);
-    public int CompareTo(Organisasjonsnummer other) => string.Compare(_value, other._value, StringComparison.InvariantCultureIgnoreCase);
+    public bool Equals(Organisasjonsnummer other) => _value.Span.SequenceEqual(other._value.Span);
+    public int CompareTo(Organisasjonsnummer other) => StringUtils.MemoryCompare(_value, other._value);
 
     public static bool operator ==(Organisasjonsnummer left, Organisasjonsnummer right) => left.Equals(right);
 

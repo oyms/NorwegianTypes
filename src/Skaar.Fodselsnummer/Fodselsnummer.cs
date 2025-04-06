@@ -31,12 +31,12 @@ public readonly struct Fodselsnummer :
     IComparisonOperators<Fodselsnummer, Fodselsnummer, bool>
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private readonly string? _value;
+    private readonly ReadOnlyMemory<char> _value;
 
     private Fodselsnummer(string? value)
     {
         _value = StringUtils.RemoveNonDigits(value);
-        IsValid = ValueParser.IsFodselsnummer(_value);
+        IsValid = ValueParser.IsFodselsnummer(_value.Span);
     }
     
     /// <remarks>
@@ -49,7 +49,7 @@ public readonly struct Fodselsnummer :
     {
         get
         {
-            if(!IsValid || !ValueParser.ValidateBirthDate(_value!, out var date)) return default;
+            if(!IsValid || !ValueParser.ValidateBirthDate(_value.Span, out var date)) return default;
             return date;
         }
     }
@@ -64,12 +64,11 @@ public readonly struct Fodselsnummer :
         get
         {
             if(!IsValid) return default;
-            var genderDigit = _value![8] - '0';
+            var genderDigit = _value.Span[8] - '0';
             return genderDigit % 2 == 0 ? Gender.Female : Gender.Male;
         }
     }
     
-    [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid { get; }
     public static Fodselsnummer Parse(string s, IFormatProvider? provider = null)
     {
@@ -95,13 +94,13 @@ public readonly struct Fodselsnummer :
         return CreateNew(ValueFactory.CreateNew(NummerType.Fodselsnummer ,date, gender));
     }
 
-    public override string ToString() => _value ?? string.Empty;
+    public override string ToString() => _value.ToString();
 
-    public bool Equals(Fodselsnummer other) => _value == other._value;
+    public bool Equals(Fodselsnummer other) => _value.Span.SequenceEqual(other._value.Span);
 
     public override bool Equals(object? obj) => obj is Fodselsnummer other && Equals(other);
 
-    public override int GetHashCode() => (_value != null ? _value.GetHashCode() : 0);
+    public override int GetHashCode() => _value.GetHashCode();
 
     public static bool operator ==(Fodselsnummer left, Fodselsnummer right) => left.Equals(right);
 
@@ -115,7 +114,7 @@ public readonly struct Fodselsnummer :
             return isValidComparison;
         }
 
-        return string.Compare(_value, other._value, StringComparison.Ordinal);
+        return StringUtils.MemoryCompare(_value, other._value);
     }
 
     public static bool operator <(Fodselsnummer left, Fodselsnummer right) => left.CompareTo(right) < 0;

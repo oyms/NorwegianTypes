@@ -9,28 +9,27 @@ internal static class ValueParser
     /// <summary>
     /// Value is already trimmed/cleaned of spacing
     /// </summary>
-    public static bool ValidateNumber(string? value)
+    public static bool ValidateNumber(ReadOnlySpan<char> value)
     {
-        if (value is null) return false;
-        if (value.Length != 11 || !value.All(char.IsDigit)) return false;
+        if (value.Length != 11) return false;
         if (!TryGetControlDigit(value[..10], out var control))
         {
             return false;
         }
-        return control == value.Last();
+        return control == value[10];
     }
 
-    public static bool TryGetControlDigit(string value, out char result) => Mod11.TryGetChecksumDigit(value, Weights, out result);
+    public static bool TryGetControlDigit(ReadOnlySpan<char> value, out char result) => Mod11.TryGetChecksumDigit(value, Weights, out result);
 
-    public static string GetIbanNumber(string accountNumber)
+    public static string GetIbanNumber(ReadOnlySpan<char> accountNumber)
     {
-        var rearranged = accountNumber + "232400";
+        var rearranged = accountNumber.ToString() + "232400";
         var numeric = System.Numerics.BigInteger.Parse(rearranged); 
         var checksum = (int)(98 - (numeric % 97));
         return $"NO{checksum:00}{accountNumber}";
     }
 
-    public static AccountType GetAccountType(string accountNumber)
+    public static AccountType GetAccountType(ReadOnlySpan<char> accountNumber)
     {
         var accountSeries = int.Parse(accountNumber[4..6]);
         if(accountSeries == 0) return AccountType.Settlement;

@@ -9,9 +9,9 @@ internal static class ValueParser
     private static readonly int[] FNrWeights1 = [3, 7, 6, 1, 8, 9, 4, 5, 2];
     private static readonly int[] FNrWeights2 = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
     private static readonly int[] DufNrWeights = [4, 6, 3, 2, 4, 6, 3, 2, 7, 5];
-    public static NummerType ParseIdNummer(string? value)
+    public static NummerType ParseIdNummer(ReadOnlySpan<char> value)
     {
-        if (string.IsNullOrEmpty(value)) return NummerType.Invalid;
+        if (value.Length == 0) return NummerType.Invalid;
         if (IsFodselsnummer(value)) return NummerType.Fodselsnummer;
         if (IsDNummer(value)) return NummerType.DNummer;
         if (IsDufNummer(value)) return NummerType.DufNummer;
@@ -20,7 +20,7 @@ internal static class ValueParser
 
     public static bool TryGetChecksumForFodselsnummer(ReadOnlySpan<char> number, [NotNullWhen(true)] out string? checksum)
     {
-        if (number.Length != 9)  // Fødselsnummer without checksum is 9 digits
+        if (number.Length != 9)
         {
             checksum = null;
             return false;
@@ -28,8 +28,7 @@ internal static class ValueParser
 
         if (Mod11.TryGetChecksumDigit(number, FNrWeights1, out var checksum1))
         {
-            // Stackalloc a buffer for number + checksum1
-            Span<char> buffer = stackalloc char[10]; // 9 digits + 1 checksum
+            Span<char> buffer = stackalloc char[10]; 
 
             number.CopyTo(buffer.Slice(0, 9));
             buffer[9] = checksum1;

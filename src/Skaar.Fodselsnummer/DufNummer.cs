@@ -30,12 +30,12 @@ public readonly struct DufNummer :
     IComparisonOperators<DufNummer, DufNummer, bool>
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private readonly string? _value;
+    private readonly ReadOnlyMemory<char> _value;
 
     private DufNummer(string? value)
     {
         _value = StringUtils.RemoveNonDigits(value);
-        IsValid = ValueParser.IsDufNummer(_value);
+        IsValid = ValueParser.IsDufNummer(_value.Span);
     }
     
     [MemberNotNullWhen(true, nameof(_value))]
@@ -64,13 +64,13 @@ public readonly struct DufNummer :
         return CreateNew(ValueFactory.CreateNew(NummerType.DufNummer ,date, gender));
     }
 
-    public override string ToString() => _value ?? string.Empty;
+    public override string ToString() => _value.ToString();
 
-    public bool Equals(DufNummer other) => _value == other._value;
+    public bool Equals(DufNummer other) => _value.Span.SequenceEqual(other._value.Span);
 
     public override bool Equals(object? obj) => obj is DufNummer other && Equals(other);
 
-    public override int GetHashCode() => (_value != null ? _value.GetHashCode() : 0);
+    public override int GetHashCode() => _value.GetHashCode();
 
     public static bool operator ==(DufNummer left, DufNummer right) => left.Equals(right);
 
@@ -84,7 +84,7 @@ public readonly struct DufNummer :
             return isValidComparison;
         }
 
-        return string.Compare(_value, other._value, StringComparison.Ordinal);
+        return StringUtils.MemoryCompare(_value, other._value);
     }
 
     public static bool operator <(DufNummer left, DufNummer right) => left.CompareTo(right) < 0;
