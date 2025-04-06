@@ -27,6 +27,13 @@ public class DNummerTests(ITestContextAccessor testContext)
     }
     
     [Fact]
+    public void TryParse_WithNull_IsNotValid()
+    {
+        DNummer.TryParse(null, null, out var result).ShouldBeFalse();
+        result.IsValid.ShouldBeFalse();
+    }
+    
+    [Fact]
     public void CreateNew_OnIdNummer_CreatesValidDNummer()
     {
         var @out = testContext.Current.TestOutputHelper!; 

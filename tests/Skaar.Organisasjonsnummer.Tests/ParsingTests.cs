@@ -28,4 +28,11 @@ public class ParsingTests
         Organisasjonsnummer.TryParse(orgnr, CultureInfo.InvariantCulture, out var result).ShouldBeFalse();
         result.IsValid.ShouldBeFalse();
     }
+    
+    [Fact]
+    public void TryParse_WithNull_IsNotValid()
+    {
+        Organisasjonsnummer.TryParse(null, null, out var result).ShouldBeFalse();
+        result.IsValid.ShouldBeFalse();
+    }
 }

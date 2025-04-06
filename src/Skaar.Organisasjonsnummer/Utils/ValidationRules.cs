@@ -12,17 +12,14 @@ internal static partial class ValidationRules
     /// <seealso href="https://no.wikipedia.org/wiki/Organisasjonsnummer"/>
     /// <seealso href="https://info.altinn.no/starte-og-drive/starte/registrering/organisasjonsnummer/"/>
     /// </remarks>
-    public static bool ValidateNumber(string? number)
+    public static bool ValidateNumber(ReadOnlySpan<char> number)
     {
-        if (number == null || 
-            number.Length != 9 || 
-            !number.All(char.IsDigit) 
-            || !Mod11.TryGetChecksumDigit(number[..8], Weights, out var checksum))
+        if (number.Length != 9 || !Mod11.TryGetChecksumDigit(number[..8], Weights, out var checksum))
         {
             return false;
         }
         
-        return checksum == number.Last();
+        return checksum == number[8];
     }
 
     public static Organisasjonsnummer GenerateRandom()

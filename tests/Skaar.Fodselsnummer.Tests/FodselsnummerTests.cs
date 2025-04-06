@@ -32,6 +32,13 @@ public class FodselsnummerTests(ITestContextAccessor testContext)
         Fodselsnummer.TryParse(number, CultureInfo.InvariantCulture, out var result).ShouldBeFalse();
         result.IsValid.ShouldBeFalse();
     }
+
+    [Fact]
+    public void TryParse_WithNull_IsNotValid()
+    {
+        Fodselsnummer.TryParse(null, null, out var result).ShouldBeFalse();
+        result.IsValid.ShouldBeFalse();
+    }
     
     [Fact]
     public void CreateNew_OnIdNummer_CreatesValidFodselsnummer()

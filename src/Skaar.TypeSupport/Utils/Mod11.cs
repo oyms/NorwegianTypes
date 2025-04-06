@@ -2,9 +2,9 @@ namespace Skaar.TypeSupport.Utils;
 
 public static class Mod11
 {
-    public static bool TryGetChecksumDigit(string? value, Span<int> weights, out char checksum)
+    public static bool TryGetChecksumDigit(ReadOnlySpan<char> value, Span<int> weights, out char checksum)
     {
-        if (value is null || value.Length != weights.Length)
+        if (value.Length != weights.Length)
         {
             checksum = '\0';
             return false;

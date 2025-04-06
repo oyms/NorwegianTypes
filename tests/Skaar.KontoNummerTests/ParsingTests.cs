@@ -18,6 +18,13 @@ public class ParsingTests(ITestContextAccessor testContextAccessor)
         testContextAccessor.Current.TestOutputHelper!.WriteLine(result.ToString());
         result.IsValid.ShouldBeTrue();
     }
+    
+    [Fact]
+    public void TryParse_WithNull_IsNotValid()
+    {
+        Kontonummer.TryParse(null, null, out var result).ShouldBeFalse();
+        result.IsValid.ShouldBeFalse();
+    }
 
     [Theory]
     [InlineData("09445101173", AccountType.CustomerAccount)]

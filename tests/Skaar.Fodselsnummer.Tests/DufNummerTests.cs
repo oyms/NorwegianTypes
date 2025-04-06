@@ -25,6 +25,13 @@ public class DufNummerTests(ITestContextAccessor testContext)
     }
     
     [Fact]
+    public void TryParse_WithNull_IsNotValid()
+    {
+        DufNummer.TryParse(null, null, out var result).ShouldBeFalse();
+        result.IsValid.ShouldBeFalse();
+    }
+    
+    [Fact]
     public void CreateNew_CreatesValidDNummer()
     {
         var @out = testContext.Current.TestOutputHelper!; 

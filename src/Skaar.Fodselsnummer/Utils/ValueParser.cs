@@ -18,37 +18,57 @@ internal static class ValueParser
         return NummerType.Invalid;
     }
 
-    public static bool TryGetChecksumForFodselsnummer(string number, [NotNullWhen(true)] out string? checksum)
+    public static bool TryGetChecksumForFodselsnummer(ReadOnlySpan<char> number, [NotNullWhen(true)] out string? checksum)
     {
-        if (Mod11.TryGetChecksumDigit(number, FNrWeights1, out var checksum1) &&
-            Mod11.TryGetChecksumDigit(number + checksum1, FNrWeights2, out var checksum2))
+        if (number.Length != 9)  // Fødselsnummer without checksum is 9 digits
         {
-            checksum = $"{checksum1}{checksum2}";
-            return true;
+            checksum = null;
+            return false;
         }
+
+        if (Mod11.TryGetChecksumDigit(number, FNrWeights1, out var checksum1))
+        {
+            // Stackalloc a buffer for number + checksum1
+            Span<char> buffer = stackalloc char[10]; // 9 digits + 1 checksum
+
+            number.CopyTo(buffer.Slice(0, 9));
+            buffer[9] = checksum1;
+
+            if (Mod11.TryGetChecksumDigit(buffer, FNrWeights2, out var checksum2))
+            {
+                checksum = $"{checksum1}{checksum2}";
+                return true;
+            }
+        }
+
         checksum = null;
         return false;
     }
 
-    public static bool IsFodselsnummer(string? number) => number is not null && ValidateFnrControlNumber(number) && ValidateBirthDate(number, out _);
+    public static bool IsFodselsnummer(ReadOnlySpan<char> number) => ValidateFnrControlNumber(number) && ValidateBirthDate(number, out _);
 
-    public static bool IsDNummer(string? number)
+    public static bool IsDNummer(ReadOnlySpan<char> number)
     {
-        if (number is null) return false;
-        if (number.Length != 11 || !number.All(char.IsDigit))
-            return false;
-        var firstDigit = (number[0] - '0');
-        if (firstDigit > 3 && firstDigit <= 7)
+        if (number.Length != 11)
         {
-            return ValidateFnrControlNumber(number) && ValidateBirthDate(firstDigit - 4 + number[1..], out _);
+            return false;
+        }
+        var firstDigit = (number[0] - '0');
+        if (firstDigit is > 3 and <= 7)
+        {
+            Span<char> buffer = stackalloc char[11];
+            number.CopyTo(buffer);
+            buffer[0] = (char) ((firstDigit - 4) + '0');
+            
+            
+            return ValidateFnrControlNumber(number) && ValidateBirthDate(buffer, out _);
         }
         return false;
     }
 
-    public static bool IsDufNummer(string? number)
+    public static bool IsDufNummer(ReadOnlySpan<char> number)
     {
-        if (number is null) return false;
-        if (number.Length != 12 || !number.All(char.IsDigit))
+        if (number.Length != 12)
         {
             return false;
         }
@@ -57,15 +77,18 @@ internal static class ValueParser
         return controlNumber == calculatedControlNumber;
     }
 
-    public static int GetDufNummerControlDigits(string number)
+    public static int GetDufNummerControlDigits(ReadOnlySpan<char> number)
     {
-        if (number.Length != 10) throw new ArgumentException("Wrong length", nameof(number));
-        var digits = number.Select(c => c - '0');
-        var sum = digits.Take(10).Select((d, i) => d * DufNrWeights[i]).Sum();
+        if (number.Length != DufNrWeights.Length) throw new ArgumentException("Wrong length", nameof(number));
+        var sum = 0;
+        for (int i = 0; i < number.Length; i++)
+        {
+            sum += (number[i] - '0') * DufNrWeights[i];
+        }
         return sum % 11;
     }
 
-    private static bool ValidateFnrControlNumber(string number)
+    private static bool ValidateFnrControlNumber(ReadOnlySpan<char> number)
     {
         if (number.Length != 11)
         {
@@ -85,15 +108,13 @@ internal static class ValueParser
         return true;
     }
 
-    public static bool ValidateBirthDate(string number, out DateOnly date)
+    public static bool ValidateBirthDate(ReadOnlySpan<char> number, out DateOnly date)
     {
-        // Valider fødselsdato (DDMMYY)
-        string datePart = number.Substring(0, 6);
-        string individPart = number.Substring(6, 3);
+        var datePart = number[..6];
+        var individPart = number[6..9];
 
-        // Hent fødselsår ut fra individnummer
         int individNr = int.Parse(individPart);
-        int year = int.Parse(datePart.Substring(4, 2));
+        int year = int.Parse(datePart[4..6]);
         int fullYear;
 
         if (individNr < 500) //1900-1999
@@ -133,7 +154,16 @@ internal static class ValueParser
             return false;
         }
 
-        string fullDate = $"{datePart.Substring(0, 2)}.{datePart.Substring(2, 2)}.{fullYear}";
-        return DateOnly.TryParseExact(fullDate, "dd.MM.yyyy", out date);
+        Span<char> fulldate = stackalloc char[10];
+        datePart[..2].CopyTo(fulldate);
+        fulldate[2] = '.';
+        datePart[2..4].CopyTo(fulldate.Slice(3));
+        fulldate[5] = '.';
+        fulldate[6] = (char) ('0' + fullYear / 1000 % 10);
+        fulldate[7] = (char) ('0' + fullYear / 100 % 10);
+        fulldate[8] = (char) ('0' + fullYear / 10 % 10);
+        fulldate[9] = (char) ('0' + fullYear / 1 % 10);
+        
+        return DateOnly.TryParseExact(fulldate, "dd.MM.yyyy", out date);
     }
 }
