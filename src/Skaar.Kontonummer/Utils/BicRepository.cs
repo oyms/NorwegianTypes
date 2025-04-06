@@ -1,5 +1,6 @@
 using CsvHelper;
 using CsvHelper.Configuration;
+using Skaar.TypeSupport.Utils;
 using System.Globalization;
 using System.Reflection;
 
@@ -7,8 +8,8 @@ namespace Skaar.Utils;
 
 internal static class BicRepository
 {
-    private static readonly Lazy<IDictionary<string, Bank>> BanksList = new(ReadBicList);
-    public static IDictionary<string, Bank> Banks => BanksList.Value;
+    private static readonly LazyAndWeakReference<IDictionary<string, Bank>> BicList = new(ReadBicList);
+    private static IDictionary<string, Bank> Banks => BicList.Value;
     private static IDictionary<string, Bank> ReadBicList()
     {
         var assembly = Assembly.GetExecutingAssembly();
