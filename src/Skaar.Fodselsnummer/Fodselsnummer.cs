@@ -71,7 +71,7 @@ public readonly struct Fodselsnummer :
     
     [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid { get; }
-    public static Fodselsnummer Parse(string s, IFormatProvider? provider)
+    public static Fodselsnummer Parse(string s, IFormatProvider? provider = null)
     {
         if (!TryParse(s, provider, out var result) && !result.IsValid)
         {

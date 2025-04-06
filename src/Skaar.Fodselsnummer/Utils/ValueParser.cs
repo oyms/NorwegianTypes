@@ -30,7 +30,7 @@ internal static class ValueParser
         return false;
     }
 
-    public static bool IsFodselsnummer(string? number) => number is not null && ValidateControlNumber(number) && ValidateBirthDate(number, out _);
+    public static bool IsFodselsnummer(string? number) => number is not null && ValidateFnrControlNumber(number) && ValidateBirthDate(number, out _);
 
     public static bool IsDNummer(string? number)
     {
@@ -40,7 +40,7 @@ internal static class ValueParser
         var firstDigit = (number[0] - '0');
         if (firstDigit > 3 && firstDigit <= 7)
         {
-            return ValidateControlNumber(number) && ValidateBirthDate(firstDigit - 4 + number[1..], out _);
+            return ValidateFnrControlNumber(number) && ValidateBirthDate(firstDigit - 4 + number[1..], out _);
         }
         return false;
     }
@@ -60,14 +60,14 @@ internal static class ValueParser
     public static int GetDufNummerControlDigits(string number)
     {
         if (number.Length != 10) throw new ArgumentException("Wrong length", nameof(number));
-        var digits = number.Select(c => c - '0').ToArray();
-        var sum = digits[..10].Select((d, i) => d * DufNrWeights[i]).Sum();
+        var digits = number.Select(c => c - '0');
+        var sum = digits.Take(10).Select((d, i) => d * DufNrWeights[i]).Sum();
         return sum % 11;
     }
 
-    private static bool ValidateControlNumber(string number)
+    private static bool ValidateFnrControlNumber(string number)
     {
-        if (number.Length != 11 || !number.All(char.IsDigit))
+        if (number.Length != 11)
         {
             return false;
         }

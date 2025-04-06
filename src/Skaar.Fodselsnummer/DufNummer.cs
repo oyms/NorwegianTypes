@@ -40,7 +40,7 @@ public readonly struct DufNummer :
     
     [MemberNotNullWhen(true, nameof(_value))]
     public bool IsValid { get; }
-    public static DufNummer Parse(string s, IFormatProvider? provider)
+    public static DufNummer Parse(string s, IFormatProvider? provider = null)
     {
         if (!TryParse(s, provider, out var result) && !result.IsValid)
         {

@@ -10,7 +10,7 @@ public class GeneratorTests(ITestContextAccessor testContext)
     public void CreateNew_OnIdNummer_CreatesValidFodselsnummer()
     {
         var @out = testContext.Current.TestOutputHelper!; 
-        const int n = 10;
+        const int n = 1000000;
         for (int i = 0; i < n; i++)
         {
             var result = IdNumber.CreateNew();
