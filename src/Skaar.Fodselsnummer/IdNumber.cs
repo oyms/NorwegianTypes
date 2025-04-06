@@ -22,7 +22,7 @@ namespace Skaar;
 [TypeConverter(typeof(ParsableTypeConverter<IdNumber>))]
 public readonly struct IdNumber :
     IIdNumber,
-    IParsable<IdNumber>,
+    ISpanParsable<IdNumber>,
     ISafeParsable<IdNumber>,
     IEquatable<IdNumber>,
     IComparable<IdNumber>,
@@ -32,7 +32,7 @@ public readonly struct IdNumber :
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private readonly ReadOnlyMemory<char> _value;
 
-    private IdNumber(string? value)
+    private IdNumber(ReadOnlySpan<char> value)
     {
         _value = StringUtils.RemoveNonDigits(value);
         Type = ValueParser.ParseIdNummer(_value.Span);
@@ -51,6 +51,22 @@ public readonly struct IdNumber :
     }
 
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out IdNumber result)
+    {
+        result = new IdNumber(s);
+        return result.IsValid;
+    }
+    
+    public static IdNumber Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
+    {
+        if (!TryParse(s, provider, out var result) && !result.IsValid)
+        {
+            throw new FormatException("String is not a valid id-number.");
+        }
+
+        return result;
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out IdNumber result)
     {
         result = new IdNumber(s);
         return result.IsValid;

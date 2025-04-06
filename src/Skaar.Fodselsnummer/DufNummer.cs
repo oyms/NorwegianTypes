@@ -22,7 +22,7 @@ namespace Skaar;
 [TypeConverter(typeof(ParsableTypeConverter<DufNummer>))]
 public readonly struct DufNummer :
     IIdNumber,
-    IParsable<DufNummer>,
+    ISpanParsable<DufNummer>,
     ISafeParsable<DufNummer>,
     IEquatable<DufNummer>,
     IComparable<DufNummer>,
@@ -32,7 +32,7 @@ public readonly struct DufNummer :
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private readonly ReadOnlyMemory<char> _value;
 
-    private DufNummer(string? value)
+    private DufNummer(ReadOnlySpan<char> value)
     {
         _value = StringUtils.RemoveNonDigits(value);
         IsValid = ValueParser.IsDufNummer(_value.Span);
@@ -51,6 +51,22 @@ public readonly struct DufNummer :
     }
 
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out DufNummer result)
+    {
+        result = new DufNummer(s);
+        return result.IsValid;
+    }
+    
+    public static DufNummer Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
+    {
+        if (!TryParse(s, provider, out var result) && !result.IsValid)
+        {
+            throw new FormatException("String is not a valid duf-number.");
+        }
+
+        return result;
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out DufNummer result)
     {
         result = new DufNummer(s);
         return result.IsValid;

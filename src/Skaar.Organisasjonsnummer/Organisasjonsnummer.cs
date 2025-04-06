@@ -21,7 +21,7 @@ namespace Skaar;
 [TypeConverter(typeof(ParsableTypeConverter<Organisasjonsnummer>))]
 [DebuggerDisplay("{ToString(OrganisasjonsnummerFormatting.WithSpaces)}")]
 public readonly struct Organisasjonsnummer : 
-    IParsable<Organisasjonsnummer>, 
+    ISpanParsable<Organisasjonsnummer>, 
     IEquatable<Organisasjonsnummer>, 
     IComparable<Organisasjonsnummer>,
     IComparisonOperators<Organisasjonsnummer, Organisasjonsnummer, bool>,
@@ -32,7 +32,7 @@ public readonly struct Organisasjonsnummer :
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private readonly ReadOnlyMemory<char> _value;
 
-    private Organisasjonsnummer(string? value)
+    private Organisasjonsnummer(ReadOnlySpan<char> value)
     {
         _value = StringUtils.RemoveNonDigits(value);
         IsValid = ValidationRules.ValidateNumber(_value.Span);
@@ -73,6 +73,23 @@ public readonly struct Organisasjonsnummer :
 
     /// <inheritdoc cref="IParsable{TSelf}"/>
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out Organisasjonsnummer result)
+    {
+        result = new Organisasjonsnummer(s);
+        return result.IsValid;
+    }
+    
+    public static Organisasjonsnummer Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
+    {
+        if (!TryParse(s, provider, out var result) && !result.IsValid)
+        {
+            throw new FormatException("String is not a valid Organisasjonsnummer.");
+        }
+
+        return result;
+    }
+
+    /// <inheritdoc cref="IParsable{TSelf}"/>
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Organisasjonsnummer result)
     {
         result = new Organisasjonsnummer(s);
         return result.IsValid;

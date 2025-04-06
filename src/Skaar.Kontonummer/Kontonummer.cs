@@ -21,7 +21,7 @@ namespace Skaar;
 [TypeConverter(typeof(ParsableTypeConverter<Kontonummer>))]
 [DebuggerDisplay("{ToString(KontonummerFormatting.Periods)}")]
 public readonly struct Kontonummer :
-    IParsable<Kontonummer>,
+    ISpanParsable<Kontonummer>,
     ISafeParsable<Kontonummer>,
     ICanBeValid,
     IEquatable<Kontonummer>,
@@ -32,7 +32,7 @@ public readonly struct Kontonummer :
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private readonly ReadOnlyMemory<char> _value;
     
-    private Kontonummer(string? value)
+    private Kontonummer(ReadOnlySpan<char> value)
     {
         _value = StringUtils.RemoveNonDigits(value);
         IsValid = ValueParser.ValidateNumber(_value.Span);
@@ -49,6 +49,22 @@ public readonly struct Kontonummer :
     }
 
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out Kontonummer result)
+    {
+        result = new Kontonummer(s);
+        return result.IsValid;
+    }
+    
+    public static Kontonummer Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
+    {
+        if (!TryParse(s, provider, out var result) && !result.IsValid)
+        {
+            throw new FormatException("String is not a valid id-number.");
+        }
+
+        return result;
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Kontonummer result)
     {
         result = new Kontonummer(s);
         return result.IsValid;

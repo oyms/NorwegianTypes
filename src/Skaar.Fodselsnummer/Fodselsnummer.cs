@@ -23,7 +23,7 @@ namespace Skaar;
 [TypeConverter(typeof(ParsableTypeConverter<Fodselsnummer>))]
 public readonly struct Fodselsnummer :
     IIdNumber,
-    IParsable<Fodselsnummer>,
+    ISpanParsable<Fodselsnummer>,
     ISafeParsable<Fodselsnummer>,
     IEquatable<Fodselsnummer>,
     IComparable<Fodselsnummer>,
@@ -33,7 +33,7 @@ public readonly struct Fodselsnummer :
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private readonly ReadOnlyMemory<char> _value;
 
-    private Fodselsnummer(string? value)
+    private Fodselsnummer(ReadOnlySpan<char> value)
     {
         _value = StringUtils.RemoveNonDigits(value);
         IsValid = ValueParser.IsFodselsnummer(_value.Span);
@@ -85,6 +85,22 @@ public readonly struct Fodselsnummer :
         result = new Fodselsnummer(s);
         return result.IsValid;
     }
+    
+    public static Fodselsnummer Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
+    {
+        if (!TryParse(s, provider, out var result) && !result.IsValid)
+        {
+            throw new FormatException("String is not a valid id-number.");
+        }
+
+        return result;
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Fodselsnummer result)
+    {
+        result = new Fodselsnummer(s);
+        return result.IsValid;
+    }
 
     public static Fodselsnummer CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<Fodselsnummer>(value, provider);
     public static Fodselsnummer CreateNew()
@@ -124,4 +140,5 @@ public readonly struct Fodselsnummer :
     public static bool operator <=(Fodselsnummer left, Fodselsnummer right) => left.CompareTo(right) <= 0;
 
     public static bool operator >=(Fodselsnummer left, Fodselsnummer right) => left.CompareTo(right) >= 0;
+
 }

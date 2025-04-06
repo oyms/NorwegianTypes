@@ -22,7 +22,7 @@ namespace Skaar;
 [TypeConverter(typeof(ParsableTypeConverter<DNummer>))]
 public readonly struct DNummer :
     IIdNumber,
-    IParsable<DNummer>,
+    ISpanParsable<DNummer>,
     ISafeParsable<DNummer>,
     IEquatable<DNummer>,
     IComparable<DNummer>,
@@ -32,7 +32,7 @@ public readonly struct DNummer :
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private readonly ReadOnlyMemory<char> _value;
 
-    private DNummer(string? value)
+    private DNummer(ReadOnlySpan<char> value)
     {
         _value = StringUtils.RemoveNonDigits(value);
         IsValid = ValueParser.IsDNummer(_value.Span);
@@ -76,6 +76,22 @@ public readonly struct DNummer :
     }
 
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out DNummer result)
+    {
+        result = new DNummer(s);
+        return result.IsValid;
+    }
+    
+    public static DNummer Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
+    {
+        if (!TryParse(s, provider, out var result) && !result.IsValid)
+        {
+            throw new FormatException("String is not a valid d-number.");
+        }
+
+        return result;
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out DNummer result)
     {
         result = new DNummer(s);
         return result.IsValid;
