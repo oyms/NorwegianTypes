@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Skaar.KontonummerTests;
 
-public class SerializationTests
+public class SerializationTests(ITestContextAccessor testContext)
 {
     [Theory]
     [InlineData(KontonummerFormatting.None, "38361226620")]
@@ -23,4 +23,26 @@ public class SerializationTests
         Kontonummer.CreateNew("1 2 3 4").ToString().ShouldBe("1234");
     }
 
+    [Fact]
+    public void Serialize_WithSystemJson_CanDeserializeIntoSame()
+    {
+        var source = new SerializationTarget(Kontonummer.CreateNew());
+        var json = System.Text.Json.JsonSerializer.Serialize(source);
+        testContext.Current.TestOutputHelper!.WriteLine(json);
+        var deserialized = System.Text.Json.JsonSerializer.Deserialize<SerializationTarget>(json);
+        deserialized.ShouldBe(source);
+    }
+    
+    [Fact]
+    public void Serialize_WithNewtonsoft_CanDeserializeIntoSame()
+    {
+        var source = new SerializationTarget(Kontonummer.CreateNew());
+        var json = Newtonsoft.Json.JsonConvert.SerializeObject(source);
+        testContext.Current.TestOutputHelper!.WriteLine(json);
+        var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<SerializationTarget>(json);
+        deserialized.ShouldBe(source);
+    }
+
 }
+
+file record SerializationTarget(Kontonummer Kontonummer);
