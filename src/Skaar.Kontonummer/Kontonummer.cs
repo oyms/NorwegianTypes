@@ -2,11 +2,10 @@ using Skaar.TypeSupport.Contracts;
 using Skaar.TypeSupport.Serialization;
 using Skaar.TypeSupport.Utils;
 using Skaar.Utils;
-using System.ComponentModel;
+using Skaar.ValueType;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using System.Text.Json.Serialization;
 
 namespace Skaar;
 
@@ -17,68 +16,24 @@ namespace Skaar;
 /// <seealso href="https://no.wikipedia.org/wiki/Kontonummer"/>
 /// <seealso href="https://www.bits.no/en/document/standard-for-kontonummer-i-norsk-banknaering-ver10/"/>
 /// </remarks>
-[JsonConverter(typeof(ParsableJsonConverter<Kontonummer>))]
-[TypeConverter(typeof(ParsableTypeConverter<Kontonummer>))]
 [DebuggerDisplay("{ToString(KontonummerFormatting.Periods)}")]
-public readonly struct Kontonummer :
-    ISpanParsable<Kontonummer>,
-    ISafeParsable<Kontonummer>,
+[ValueType]
+public readonly partial struct Kontonummer : ISafeParsable<Kontonummer>,
     ISpanFormattable,
     ICanBeValid,
     IHasLength,
-    IEquatable<Kontonummer>,
     IComparable<Kontonummer>,
     IComparisonOperators<Kontonummer,Kontonummer, bool>,
     IRandomValueFactory<Kontonummer>
 {
-    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private readonly ReadOnlyMemory<char> _value;
     
-    private Kontonummer(ReadOnlySpan<char> value)
-    {
-        _value = StringUtils.RemoveNonDigits(value);
-        IsValid = ValueParser.ValidateNumber(_value.Span);
-    }
-    
-    public static Kontonummer Parse(string s, IFormatProvider? provider = null)
-    {
-        if (!TryParse(s, provider, out var result) && !result.IsValid)
-        {
-            throw new FormatException("String is not a valid id-number.");
-        }
-
-        return result;
-    }
-
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out Kontonummer result)
-    {
-        result = new Kontonummer(s);
-        return result.IsValid;
-    }
-    
-    public static Kontonummer Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
-    {
-        if (!TryParse(s, provider, out var result) && !result.IsValid)
-        {
-            throw new FormatException("String is not a valid id-number.");
-        }
-
-        return result;
-    }
-
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Kontonummer result)
-    {
-        result = new Kontonummer(s);
-        return result.IsValid;
-    }
+    private partial bool ValueIsValid(ReadOnlySpan<char> value) => ValueParser.ValidateNumber(value);
+    private partial ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
+   
     
     public static Kontonummer CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<Kontonummer>(value, provider);
     
     [MemberNotNullWhen(true, nameof(_value))]
-    public bool IsValid { get; }
-    public int Length => _value.Length;
-
-    public override string ToString() => ToString(KontonummerFormatting.None);
 
     public string ToString(KontonummerFormatting formatting)
     {
@@ -129,17 +84,7 @@ public readonly struct Kontonummer :
     /// </summary>
     public Bank Bank => IsValid ? BicRepository.Lookup(_value.Span[..4].ToString()) : Bank.Undefined;
     
-    public bool Equals(Kontonummer other) => _value.Span.SequenceEqual(other._value.Span);
-
     public static Kontonummer CreateNew() => CreateNew(Factory.GenerateRandom());
-
-    public override bool Equals(object? obj) => obj is Kontonummer other && Equals(other);
-
-    public override int GetHashCode() => _value.GetHashCode();
-
-    public static bool operator ==(Kontonummer left, Kontonummer right) => left.Equals(right);
-
-    public static bool operator !=(Kontonummer left, Kontonummer right) => !left.Equals(right);
 
     public int CompareTo(Kontonummer other)
     {
