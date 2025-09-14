@@ -17,8 +17,8 @@
       <EmbeddedResource Include="Resources\Norwegian-BIC-IBAN-table.csv" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="CsvHelper" Version="33.0.1" />
-      <PackageReference Include="Skaar.ValueType" Version="1.0.0" />
+      <PackageReference Include="CsvHelper" Version="33.1.0" />
+      <PackageReference Include="Skaar.ValueType" Version="2.0.1" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>

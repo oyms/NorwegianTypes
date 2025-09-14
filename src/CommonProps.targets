@@ -3,7 +3,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);CS1591;CA1822</NoWarn>
         <AssemblyVersion>$(Version)</AssemblyVersion>
-        <VersionPrefix>1.2.0</VersionPrefix>
+        <VersionPrefix>2.0.0</VersionPrefix>
         <Product>Norwegian types</Product>
         <Authors>Skaar</Authors>
         <IncludeSymbols>true</IncludeSymbols>
@@ -21,6 +21,7 @@
             1.1.3: Icons (fix)
             1.1.4: Use ReadOnlyMemory as internal state
             1.2.0: Use Skaar.ValueType
+            2.0.0: Update ValueType
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <IsPackable>true</IsPackable>

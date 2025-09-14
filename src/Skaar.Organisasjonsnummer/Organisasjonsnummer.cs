@@ -18,9 +18,7 @@ namespace Skaar;
 [DebuggerDisplay("{ToString(OrganisasjonsnummerFormatting.WithSpaces)}")]
 [ValueType]
 public readonly partial struct Organisasjonsnummer : 
-    ISpanParsable<Organisasjonsnummer>,
     ISpanFormattable,
-    IEquatable<Organisasjonsnummer>, 
     IComparable<Organisasjonsnummer>,
     IComparisonOperators<Organisasjonsnummer, Organisasjonsnummer, bool>,
     ICanBeValid,
