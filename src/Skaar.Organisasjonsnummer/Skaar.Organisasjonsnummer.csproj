@@ -13,7 +13,7 @@
       <ProjectReference Include="..\Skaar.TypeSupport\Skaar.TypeSupport.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="Skaar.ValueType" Version="2.0.1" PrivateAssets="all" />
+      <PackageReference Include="Skaar.ValueType" Version="3.0.0" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>

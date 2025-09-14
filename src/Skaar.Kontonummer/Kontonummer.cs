@@ -27,8 +27,8 @@ public readonly partial struct Kontonummer : ISafeParsable<Kontonummer>,
     IRandomValueFactory<Kontonummer>
 {
     
-    private partial bool ValueIsValid(ReadOnlySpan<char> value) => ValueParser.ValidateNumber(value);
-    private partial ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
+    private bool ValueIsValid(ReadOnlySpan<char> value) => ValueParser.ValidateNumber(value);
+    private ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
    
     
     public static Kontonummer CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<Kontonummer>(value, provider);

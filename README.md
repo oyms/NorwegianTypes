@@ -10,16 +10,16 @@ implementing common norwegian domain types.
 
 [A library containing a type and tools to represent a Norwegian org number](./src/Skaar.Organisasjonsnummer).
 
-[nuget: Organisasjonsnummer](https://www.nuget.org/packages/Skaar.Organisasjonsnummer/)
+[![Organisasjonsnummer](https://img.shields.io/nuget/v/Skaar.Organisasjonsnummer.svg)](https://www.nuget.org/packages/Skaar.Organisasjonsnummer/)
 
 ## Fødselsnummer
 
 [A library containing a type and tools to represent a Norwegian id number](./src/Skaar.Fodselsnummer).
 
-[nuget: Fodselsnummer](https://www.nuget.org/packages/Skaar.Fodselsnummer/)
+[![Fodselsnummer](https://img.shields.io/nuget/v/Skaar.Fodselsnummer.svg)](https://www.nuget.org/packages/Skaar.Fodselsnummer/)
 
 ## Kontonummer
 
 [A library containing a type and tools to represent a Norwegian bank account number](./src/Skaar.Kontonummer).
 
-[nuget: Kontonummer](https://www.nuget.org/packages/Skaar.Kontonummer/)
+[![Kontonummer](https://img.shields.io/nuget/v/Skaar.Kontonummer.svg)](https://www.nuget.org/packages/Skaar.Kontonummer/)

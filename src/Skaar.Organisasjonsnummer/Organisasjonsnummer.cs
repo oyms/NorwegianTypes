@@ -26,8 +26,8 @@ public readonly partial struct Organisasjonsnummer :
     IRandomValueFactory<Organisasjonsnummer>,
     ISafeParsable<Organisasjonsnummer>
 {
-    private partial bool ValueIsValid(ReadOnlySpan<char> value) => ValidationRules.ValidateNumber(value);
-    private partial ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
+    private bool ValueIsValid(ReadOnlySpan<char> value) => ValidationRules.ValidateNumber(value);
+    private ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
     
     /// <summary>
     /// Creates a new random valid value.

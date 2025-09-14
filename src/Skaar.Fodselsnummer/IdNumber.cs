@@ -35,8 +35,8 @@ public readonly partial struct IdNumber :
     }
     
     #pragma warning disable CS8826 // Throwaway parameter
-    private partial bool ValueIsValid(ReadOnlySpan<char> _) => Type != NummerType.Invalid;
-    private partial ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
+    private bool ValueIsValid(ReadOnlySpan<char> _) => Type != NummerType.Invalid;
+    private ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
 
     public NummerType Type { get; }
     

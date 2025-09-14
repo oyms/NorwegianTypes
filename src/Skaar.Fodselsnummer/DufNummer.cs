@@ -26,9 +26,9 @@ public readonly partial struct DufNummer :
     IComparisonOperators<DufNummer, DufNummer, bool>
 {
     
-    private partial bool ValueIsValid(ReadOnlySpan<char> value) => ValueParser.IsDufNummer(value);
+    private bool ValueIsValid(ReadOnlySpan<char> value) => ValueParser.IsDufNummer(value);
 
-    private partial ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
+    private ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
     
     public static DufNummer CreateNew(string? value, IFormatProvider? provider = null) => Parser.SafeParse<DufNummer>(value, provider);
     public static DufNummer CreateNew()

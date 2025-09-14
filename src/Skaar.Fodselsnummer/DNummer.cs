@@ -27,9 +27,9 @@ public readonly partial struct DNummer :
 {
     
 
-    private partial bool ValueIsValid(ReadOnlySpan<char> value) => ValueParser.IsDNummer(value);
+    private bool ValueIsValid(ReadOnlySpan<char> value) => ValueParser.IsDNummer(value);
 
-    private partial ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
+    private ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
 
 
     public DateOnly BirthDate 

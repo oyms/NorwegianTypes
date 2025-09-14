@@ -26,8 +26,8 @@ public readonly partial struct Fodselsnummer :
     IRandomValueFactory<Fodselsnummer>,
     IComparisonOperators<Fodselsnummer, Fodselsnummer, bool>
 {
-    private partial bool ValueIsValid(ReadOnlySpan<char> value) => ValueParser.IsFodselsnummer(value);
-    private partial ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
+    private bool ValueIsValid(ReadOnlySpan<char> value) => ValueParser.IsFodselsnummer(value);
+    private ReadOnlySpan<char> Clean(ReadOnlySpan<char> value) => Helper.Clean.RemoveNonDigits(value);
 
     
     /// <remarks>
