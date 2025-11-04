@@ -1,9 +1,13 @@
 <Solution>
+  <Folder Name="/BilRegNr/">
+    <Project Path="src\Skaar.BilRegNr\Skaar.BilRegNr.csproj" Type="Classic C#" />
+    <Project Path="tests\Skaar.BilRegNr.Tests\Skaar.BilRegNr.Tests.csproj" Type="Classic C#" />
+  </Folder>
   <Folder Name="/Common/">
+    <Project Path="src/Skaar.TypeSupport/Skaar.TypeSupport.csproj" />
     <File Path="LICENSE" />
     <File Path="README.md" />
     <File Path="src/CommonProps.targets" />
-    <Project Path="src/Skaar.TypeSupport/Skaar.TypeSupport.csproj" />
   </Folder>
   <Folder Name="/Fødselsnummer/">
     <Project Path="src/Skaar.Fodselsnummer/Skaar.Fodselsnummer.csproj" />

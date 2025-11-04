@@ -13,7 +13,7 @@ public class ParsingTests
     [InlineData("989 529 196")]
     [InlineData("934     3 28 2  80")]
     [InlineData("NO-BRC-968253980")]
-    public void TryParse_WithValidNumbers_IsValidIsFalse(string orgnr)
+    public void TryParse_WithValidNumbers_IsValidIsTrue(string orgnr)
     {
         Organisasjonsnummer.TryParse(orgnr, CultureInfo.InvariantCulture, out var result).ShouldBeTrue();
         result.IsValid.ShouldBeTrue();
