@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/Common/">
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+    <File Path="src/CommonProps.targets" />
+    <Project Path="src/Skaar.TypeSupport/Skaar.TypeSupport.csproj" />
+  </Folder>
+  <Folder Name="/Fødselsnummer/">
+    <Project Path="src/Skaar.Fodselsnummer/Skaar.Fodselsnummer.csproj" />
+    <Project Path="tests/Skaar.Fodselsnummer.Tests/Skaar.Fodselsnummer.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Kontonummer/">
+    <Project Path="src/Skaar.Kontonummer/Skaar.Kontonummer.csproj" />
+    <Project Path="tests/Skaar.KontoNummerTests/Skaar.KontoNummerTests.csproj" />
+  </Folder>
+  <Folder Name="/OrgNr/">
+    <Project Path="src/Skaar.Organisasjonsnummer/Skaar.Organisasjonsnummer.csproj" />
+    <Project Path="tests/Skaar.Organisasjonsnummer.Tests/Skaar.Organisasjonsnummer.Tests.csproj" />
+  </Folder>
+</Solution>
