@@ -35,7 +35,66 @@ public readonly partial struct Kontonummer : ISafeParsable<Kontonummer>,
     
     [MemberNotNullWhen(true, nameof(_value))]
 
+    
     public string ToString(KontonummerFormatting formatting)
+    {
+        if (!IsValid) return ToString();
+        return formatting switch
+        {
+            KontonummerFormatting.None => ToString(KontonummerFormats.General, null),
+            KontonummerFormatting.Periods => ToString(KontonummerFormats.Periods, null),
+            KontonummerFormatting.Spaces => ToString(KontonummerFormats.NonBreakingSpaces, null),
+            KontonummerFormatting.IbanScreen => ToString(KontonummerFormats.IbanScreen, null),
+            KontonummerFormatting.IbanPrint => ToString(KontonummerFormats.IbanPrint, null),
+            _ => throw new ArgumentException("Unknown formatting")
+        };
+    }
+
+    /// <summary>
+    /// Formats the Kontonummer according to the specified format.
+    /// </summary>
+    /// <param name="format">
+    /// Supported formats:
+    /// <list type="table">
+    /// <listheader><term>Format</term><description>Description</description></listheader>
+    /// <item>
+    /// <term>"G"</term>
+    /// <description>General format (default).</description>
+    /// </item>
+    /// <item>
+    /// <term>"N"</term>
+    /// <description>Non-breaking spaces as separators.</description>
+    /// </item>
+    /// <item>
+    /// <term>"P"</term>
+    /// <description>Periods as separators.</description>
+    /// </item>
+    /// <item>
+    /// <term>"S"</term>
+    /// <description>IBAN electronic format</description>
+    /// </item>
+    /// <item>
+    /// <term>"I"</term>
+    /// <description>IBAN print format.</description>
+    /// </item>
+    /// </list>
+    /// </param>
+    /// <param name="formatProvider">Not in use</param>
+    /// <returns>A formatted string</returns>
+    /// <remarks>Returns default when <paramref name="format"/> is unknown.</remarks>
+    /// <remarks>Returns the inner value if value is invalid.</remarks>
+    /// <seealso cref="KontonummerFormats"/>
+    /// <seealso cref="KontonummerFormatting"/>
+    /// <example>
+    /// <code language="csharp">
+    /// value.ToString("G", CultureInfo.InvariantCulture); // "00000000000"
+    /// value.ToString("N", CultureInfo.InvariantCulture); // "0000 00 00000"
+    /// value.ToString("P", CultureInfo.InvariantCulture); // "0000.00.00000"
+    /// value.ToString("S", CultureInfo.InvariantCulture); // "NO0000000000000"
+    /// value.ToString("I", CultureInfo.InvariantCulture); // "NO00 0000 0000 000"
+    /// </code>
+    /// </example>
+    public string ToString(string? format, IFormatProvider? formatProvider)
     {
         var that = this;
         string FormatIban()
@@ -43,19 +102,16 @@ public readonly partial struct Kontonummer : ISafeParsable<Kontonummer>,
             var iban = that.Iban;
             return $"{iban[..4]} {iban[4..8]} {iban[8..12]} {iban[12..]}";
         }
-        if (!IsValid) return _value.ToString();
-        return formatting switch
+        if (!IsValid) return ToString();
+        return format switch
         {
-            KontonummerFormatting.None => _value.ToString(),
-            KontonummerFormatting.Periods => $"{_value[..4]}.{_value[4..6]}.{_value[6..]}",
-            KontonummerFormatting.Spaces => $"{_value[..4]} {_value[4..6]} {_value[6..]}",
-            KontonummerFormatting.IbanScreen => Iban,
-            KontonummerFormatting.IbanPrint => FormatIban(),
-            _ => throw new ArgumentException("Unknown formatting")
+            KontonummerFormats.NonBreakingSpaces => $"{_value[..4]} {_value[4..6]} {_value[6..]}",
+            KontonummerFormats.Periods => $"{_value[..4]}.{_value[4..6]}.{_value[6..]}",
+            KontonummerFormats.IbanScreen => Iban,
+            KontonummerFormats.IbanPrint => FormatIban(),
+            _ => ToString()
         };
     }
-    
-    public string ToString(string? format, IFormatProvider? formatProvider) => ToString();
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
         IFormatProvider? provider) =>

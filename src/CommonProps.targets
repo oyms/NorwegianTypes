@@ -3,7 +3,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);CS1591;CA1822</NoWarn>
         <AssemblyVersion>$(Version)</AssemblyVersion>
-        <VersionPrefix>2.0.1</VersionPrefix>
+        <VersionPrefix>2.1.0</VersionPrefix>
         <Product>Norwegian types</Product>
         <Authors>Skaar</Authors>
         <IncludeSymbols>true</IncludeSymbols>
@@ -23,6 +23,7 @@
             1.2.0: Use Skaar.ValueType
             2.0.0: Update ValueType
             2.0.1: Update Valuetype (3.0.0). Update docs.
+            2.1.0: Implement IFormattable in kontonummer + org.nr
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <IsPackable>true</IsPackable>

@@ -59,8 +59,50 @@ public readonly partial struct Organisasjonsnummer :
             _ => ToString()
         };
     }
-    
-    public string ToString(string? format, IFormatProvider? formatProvider) => ToString();
+
+    /// <summary>
+    /// Formats the number according to the specified format.
+    /// </summary>
+    /// <param name="format">
+    /// Supported formats:
+    /// <list type="table">
+    /// <listheader><term>Format</term><description>Description</description></listheader>
+    /// <item>
+    /// <term>"G"</term>
+    /// <description>General format (default).</description>
+    /// </item>
+    /// <item>
+    /// <term>"S"</term>
+    /// <description>Triples interspaced with non-breaking space.</description>
+    /// </item>
+    /// <item>
+    /// <term>"O"</term>
+    /// <description><see href="https://org-id.guide/list/NO-BRC"/></description>
+    /// </item>
+    /// </list>
+    /// </param>
+    /// <param name="formatProvider">Not in use</param>
+    /// <returns>A formatted string</returns>
+    /// <remarks>Returns default when <paramref name="format"/> is unknown.</remarks>
+    /// <remarks>Returns the inner value if value is invalid.</remarks>
+    /// <seealso cref="OrganisasjonsnummerFormatting"/>
+    /// <example>
+    /// <code language="csharp">
+    /// value.ToString("G", CultureInfo.InvariantCulture); // "968253980"
+    /// value.ToString("S", CultureInfo.InvariantCulture); // "894 961 902"
+    /// value.ToString("O", CultureInfo.InvariantCulture); // "NO-BRC-972417920"
+    /// </code>
+    /// </example>
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        if (!IsValid) return ToString();
+        return format switch
+        {
+            "S" => ToString(OrganisasjonsnummerFormatting.WithSpaces),
+            "O" => ToString(OrganisasjonsnummerFormatting.OrgIdFormat),
+            _ => ToString()
+        };
+    }
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
         IFormatProvider? provider) =>
