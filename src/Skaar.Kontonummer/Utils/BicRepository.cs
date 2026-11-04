@@ -1,7 +1,4 @@
-using CsvHelper;
-using CsvHelper.Configuration;
 using Skaar.TypeSupport.Utils;
-using System.Globalization;
 using System.Reflection;
 
 namespace Skaar.Utils;
@@ -16,10 +13,16 @@ internal static class BicRepository
         using var stream = assembly.GetManifestResourceStream("Skaar.Resources.Norwegian-BIC-IBAN-table.csv");
         if (stream == null) throw new InvalidOperationException("Cannot find the csv file.");
         using var reader = new StreamReader(stream);
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ";", HasHeaderRecord = true };
-        using var csv = new CsvReader(reader, config);
-        var records = csv.GetRecords<BicRecord>()
-            .ToDictionary(r => r.Identifier, r => new Bank(r.Bic, r.Bank));
+        // Columns: Bank identifier;BIC;Bank. The first line is the header.
+        reader.ReadLine();
+        var records = new Dictionary<string, Bank>();
+        while (reader.ReadLine() is { } line)
+        {
+            if (string.IsNullOrWhiteSpace(line)) continue;
+            var fields = line.Split(';');
+            if (fields.Length != 3) throw new InvalidDataException($"Invalid line in the csv file: '{line}'");
+            records.Add(fields[0], new Bank(fields[1], fields[2]));
+        }
         return records;
     }
 

@@ -9,5 +9,8 @@
         <PackageTags>norway domain validation</PackageTags>
         <Description>A library supporting the packages in the NorwegianTypes repo.</Description>
     </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.403" />
+    </ItemGroup>
 
 </Project>

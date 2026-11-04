@@ -16,7 +16,8 @@
         <ProjectReference Include="..\Skaar.TypeSupport\Skaar.TypeSupport.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Skaar.ValueType" Version="3.0.0" PrivateAssets="all" />
+        <PackageReference Include="Skaar.ValueType" Version="4.0.0" />
+        <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.403" />
     </ItemGroup>
     
 </Project>
