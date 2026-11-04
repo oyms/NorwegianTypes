@@ -5,6 +5,7 @@
   </Folder>
   <Folder Name="/Common/">
     <Project Path="src/Skaar.TypeSupport/Skaar.TypeSupport.csproj" />
+    <File Path="global.json" />
     <File Path="LICENSE" />
     <File Path="README.md" />
     <File Path="src/CommonProps.targets" />
